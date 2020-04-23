@@ -26,6 +26,30 @@ import Element.Font as Font
 import Element.Input as Input
 
 
+bgProfileColor =
+    rgba255 40 40 40 0.4
+
+
+primaryBrown =
+    rgb255 146 131 116
+
+
+red =
+    rgb255 107 70 76
+
+
+darkBg =
+    rgb255 50 48 47
+
+
+darkest =
+    rgb255 40 40 40
+
+
+lightBg =
+    rgb255 60 56 54
+
+
 main =
     Element.layout
         [ Background.image "https://images.unsplash.com/photo-1503252947848-7338d3f92f31"
@@ -43,13 +67,13 @@ profile =
         [ centerX
         , Element.alignTop
         , width (fill |> Element.maximum 800)
-        , Background.color (rgba255 40 40 40 0.4)
+        , Background.color <| bgProfileColor
         , height (fill |> Element.maximum 375)
         , Border.rounded 6
         , Element.spacingXY 0 20
         ]
         [ -- HardCoded Spacing xD
-          el [] (text "     ")
+          el [] <| text "     "
 
         -- Image's Profile
         , el []
@@ -58,7 +82,7 @@ profile =
                 , Element.clip
                 , width <| Element.px 300
                 , height <| Element.px 300
-                , Border.color (rgb255 146 131 116)
+                , Border.color <| primaryBrown
                 , Border.width 6
                 ]
                 { src = "https://avatars0.githubusercontent.com/u/45639906"
@@ -84,13 +108,14 @@ profile =
                         }
                     ]
                 , Font.size 62
-                , Font.color (rgb255 146 131 116)
+                , Font.color <| primaryBrown
                 ]
                 (text "Luis Ilarraza")
             , el
-                [ Font.color (rgb255 107 70 76)
+                [ Font.color <| red
                 , Element.paddingXY 0 20
                 , Font.size 32
+                , Font.italic
                 ]
                 (text "Technician & Programmer")
             ]
@@ -103,7 +128,7 @@ actualContent =
         , Element.alignBottom
         , width
             (fill |> Element.maximum 1000)
-        , Background.color (rgb255 60 56 54)
+        , Background.color <| lightBg
         , height (fill |> Element.maximum 400)
         , Border.rounded 6
         ]
@@ -113,7 +138,7 @@ actualContent =
 menubar =
     row
         [ Element.alignTop
-        , Background.color (rgb255 50 48 47)
+        , Background.color <| darkBg
         , width fill
         , Border.roundEach
             { bottomLeft = 0
@@ -132,8 +157,8 @@ menubar =
 portaButton : String -> Element Order
 portaButton txt =
     Input.button
-        [ Background.color (rgb255 40 40 40)
-        , Font.color (rgb255 146 131 116)
+        [ Background.color <| darkest
+        , Font.color <| primaryBrown
         , padding 10
         , centerX
         , Border.widthEach
@@ -142,11 +167,11 @@ portaButton txt =
             , right = 0
             , top = 3
             }
-        , Border.color (rgb255 146 131 116)
+        , Border.color <| primaryBrown
         , Element.mouseOver
-            [ Background.color (rgb255 146 131 116)
-            , Font.color (rgb255 40 40 40)
-            , Border.color (rgb255 40 40 40)
+            [ Background.color <| primaryBrown
+            , Font.color <| darkest
+            , Border.color <| darkest
             ]
         ]
         { onPress = Nothing, label = text txt }
