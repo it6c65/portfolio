@@ -11,8 +11,10 @@ import Element
         , el
         , fill
         , height
+        , image
         , padding
         , rgb255
+        , rgba255
         , row
         , spacing
         , text
@@ -32,19 +34,77 @@ main =
 
 
 cover =
-    row [ width fill, height fill, centerY ]
-        [ row
+    column [ width fill, height fill, centerY ]
+        [ profile, actualContent ]
+
+
+profile =
+    row
+        [ centerX
+        , Element.alignTop
+        , width (fill |> Element.maximum 800)
+        , Background.color (rgba255 40 40 40 0.4)
+        , height (fill |> Element.maximum 375)
+        , Border.rounded 6
+        , Element.spacingXY 0 20
+        ]
+        [ -- HardCoded Spacing xD
+          el [] (text "     ")
+
+        -- Image's Profile
+        , el []
+            (image
+                [ Border.rounded 500
+                , Element.clip
+                , width <| Element.px 300
+                , height <| Element.px 300
+                , Border.color (rgb255 146 131 116)
+                , Border.width 6
+                ]
+                { src = "https://avatars0.githubusercontent.com/u/45639906"
+                , description = "Photo_Me"
+                }
+            )
+        , column
             [ centerX
-            , Element.alignBottom
-            , width
-                (fill |> Element.maximum 1000)
-            , Background.color (rgb255 60 56 54)
-            , height (fill |> Element.maximum 400)
-            , Border.rounded 6
+            , Font.family
+                [ Font.external
+                    { url = "https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,500;1,500"
+                    , name = "IBM Plex Serif"
+                    }
+                ]
             ]
-            [ menubar
+            [ el
+                [ Font.family
+                    [ Font.external
+                        { url = "https://fonts.googleapis.com/css2?family=Pacifico"
+                        , name = "Pacifico"
+                        }
+                    ]
+                      , Font.size 62
+                      , Font.color (rgb255 146 131 116)
+                ]
+                (text "Luis Ilarraza")
+            , el [
+                 Font.color (rgb255 107 70 76)
+                     , Element.paddingXY 0 20
+                         , Font.size 32
+                ] (text "Technician & Programmer")
             ]
         ]
+
+
+actualContent =
+    column
+        [ centerX
+        , Element.alignBottom
+        , width
+            (fill |> Element.maximum 1000)
+        , Background.color (rgb255 60 56 54)
+        , height (fill |> Element.maximum 400)
+        , Border.rounded 6
+        ]
+        [ menubar ]
 
 
 menubar =
@@ -82,8 +142,8 @@ portaButton txt =
         , Border.color (rgb255 146 131 116)
         , Element.mouseOver
             [ Background.color (rgb255 146 131 116)
-            , Font.color (rgb255 0 0 0)
-            , Border.color (rgb255 0 0 0)
+            , Font.color (rgb255 40 40 40)
+            , Border.color (rgb255 40 40 40)
             ]
         ]
         { onPress = Nothing, label = text txt }
