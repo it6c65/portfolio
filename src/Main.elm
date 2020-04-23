@@ -65,8 +65,10 @@ profile =
                 , description = "Photo_Me"
                 }
             )
+
+        -- Letters & title
         , column
-            [ centerX
+            [ centerX --, Element.alignTop, Element.paddingXY 0 40
             , Font.family
                 [ Font.external
                     { url = "https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,500;1,500"
@@ -81,15 +83,16 @@ profile =
                         , name = "Pacifico"
                         }
                     ]
-                      , Font.size 62
-                      , Font.color (rgb255 146 131 116)
+                , Font.size 62
+                , Font.color (rgb255 146 131 116)
                 ]
                 (text "Luis Ilarraza")
-            , el [
-                 Font.color (rgb255 107 70 76)
-                     , Element.paddingXY 0 20
-                         , Font.size 32
-                ] (text "Technician & Programmer")
+            , el
+                [ Font.color (rgb255 107 70 76)
+                , Element.paddingXY 0 20
+                , Font.size 32
+                ]
+                (text "Technician & Programmer")
             ]
         ]
 
