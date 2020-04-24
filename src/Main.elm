@@ -47,7 +47,7 @@ darkest =
 
 
 lightBg =
-    rgb255 60 56 54
+    rgba255 60 56 54 0.96
 
 
 main =
@@ -68,7 +68,7 @@ profile =
         , Element.alignTop
         , width (fill |> Element.maximum 800)
         , Background.color <| bgProfileColor
-        , height (fill |> Element.maximum 375)
+        , height (fill |> Element.maximum 275)
         , Border.rounded 6
         , Element.spacingXY 0 20
         ]
@@ -80,8 +80,8 @@ profile =
             (image
                 [ Border.rounded 500
                 , Element.clip
-                , width <| Element.px 300
-                , height <| Element.px 300
+                , width <| Element.px 250
+                , height <| Element.px 250
                 , Border.color <| primaryBrown
                 , Border.width 6
                 ]
@@ -129,7 +129,7 @@ actualContent =
         , width
             (fill |> Element.maximum 1000)
         , Background.color <| lightBg
-        , height (fill |> Element.maximum 400)
+        , height (fill |> Element.maximum 500)
         , Border.rounded 6
         ]
         [ menubar ]
@@ -159,6 +159,10 @@ portaButton txt =
     Input.button
         [ Background.color <| darkest
         , Font.color <| primaryBrown
+        , Font.family
+            [ Font.typeface "IBM Plex Serif"
+            , Font.sansSerif
+            ]
         , padding 10
         , centerX
         , Border.widthEach
