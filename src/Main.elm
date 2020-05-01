@@ -13,6 +13,7 @@ import Element
         , height
         , image
         , padding
+        , paragraph
         , rgb255
         , rgba255
         , row
@@ -24,6 +25,43 @@ import Element.Background as Background
 import Element.Border as Border
 import Element.Font as Font
 import Element.Input as Input
+
+
+main =
+    Browser.document { init = init, update = update, view = view, subscriptions = subscriptions }
+
+
+type alias Model =
+    { content : Element Msg, active : Bool }
+
+
+init : () -> ( Model, Cmd Msg )
+init _ =
+    ( Model Element.none True, Cmd.none )
+
+
+type Msg
+    = Inicio
+    | Proyectos
+    | Contacto
+
+
+update : Msg -> Model -> ( Model, Cmd Msg )
+update msg model =
+    case msg of
+        Inicio ->
+            ( Model welcome True, Cmd.none )
+
+        Proyectos ->
+            ( Model proyectos True, Cmd.none )
+
+        Contacto ->
+            ( Model contacto True, Cmd.none )
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Sub.none
 
 
 bgProfileColor =
@@ -47,19 +85,22 @@ darkest =
 
 
 lightBg =
-    rgba255 60 56 54 0.96
+    rgba255 60 56 54 0.9
 
 
-main =
-    Element.layout
-        [ Background.image "https://images.unsplash.com/photo-1503252947848-7338d3f92f31"
+view : Model -> Browser.Document Msg
+view model =
+    Browser.Document "Portafolio" <|
+        [ Element.layout
+            [ Background.image "https://images.unsplash.com/photo-1503252947848-7338d3f92f31"
+            ]
+            (cover model)
         ]
-        cover
 
 
-cover =
+cover model =
     column [ width fill, height fill, centerY ]
-        [ profile, actualContent ]
+        [ profile, actualContent model ]
 
 
 profile =
@@ -95,7 +136,7 @@ profile =
             [ centerX --, Element.alignTop, Element.paddingXY 0 40
             , Font.family
                 [ Font.external
-                    { url = "https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,500;1,500"
+                    { url = "https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,500;0,700;1,500"
                     , name = "IBM Plex Serif"
                     }
                 ]
@@ -117,12 +158,12 @@ profile =
                 , Font.size 32
                 , Font.italic
                 ]
-                (text "Technician & Programmer")
+                (text "Programmer & Freelancer")
             ]
         ]
 
 
-actualContent =
+actualContent model =
     column
         [ centerX
         , Element.alignBottom
@@ -132,10 +173,12 @@ actualContent =
         , height (fill |> Element.maximum 500)
         , Border.rounded 6
         ]
-        [ menubar ]
+        [ menubar model
+        , model.content
+        ]
 
 
-menubar =
+menubar model =
     row
         [ Element.alignTop
         , Background.color <| darkBg
@@ -148,14 +191,14 @@ menubar =
             }
         , spacing 10
         ]
-        [ portaButton "Inicio"
-        , portaButton "Proyectos"
-        , portaButton "Acerca de..."
+        [ portaButton "Inicio" (Just Inicio) model
+        , portaButton "Proyectos" (Just Proyectos) model
+        , portaButton "Contacto" (Just Contacto) model
         ]
 
 
-portaButton : String -> Element Order
-portaButton txt =
+portaButton : String -> Maybe Msg -> Model -> Element Msg
+portaButton txt action model =
     Input.button
         [ Background.color <| darkest
         , Font.color <| primaryBrown
@@ -178,4 +221,27 @@ portaButton txt =
             , Border.color <| darkest
             ]
         ]
-        { onPress = Nothing, label = text txt }
+        { onPress = action, label = text txt }
+
+
+welcome : Element Msg
+welcome =
+    Element.textColumn [ Element.alignTop, centerX, Font.family [ Font.typeface "IBM Plex Serif" ], Font.color <| primaryBrown ]
+        [ el [ Font.bold, Font.center, Element.paddingXY 0 15 ] (text "Introducción")
+        , paragraph [ Font.justify ] [ text "Hola, bienvenidos a mi portafolio" ]
+        ]
+
+
+proyectos : Element Msg
+proyectos =
+    column [ Element.alignTop, centerX, Element.spacing 20 ]
+        [ row [] [ el [] (text "Proyects") ]
+        , row [] [ el [] (text "Here!") ]
+        ]
+
+
+contacto : Element Msg
+contacto =
+    row [ Element.alignTop, centerX ]
+        [ el [] (text "contact here!")
+        ]
