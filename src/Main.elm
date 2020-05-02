@@ -25,6 +25,9 @@ import Element.Background as Background
 import Element.Border as Border
 import Element.Font as Font
 import Element.Input as Input
+import FontAwesome.Brands as IconsBrands
+import FontAwesome.Icon as Icon
+import FontAwesome.Solid as IconsSolid
 
 
 main =
@@ -101,7 +104,8 @@ view model =
                     Element.FocusStyle (Just primaryBrown) Nothing Nothing
                 ]
             }
-            [ Background.image "https://images.unsplash.com/photo-1503252947848-7338d3f92f31"
+            [ Background.color <| darkest
+            , Background.image "https://images.unsplash.com/photo-1503252947848-7338d3f92f31"
             ]
             (cover model)
         ]
@@ -255,65 +259,67 @@ welcome =
             , Font.underline
             , Font.size 26
             ]
-            (
-             -- In Spanish
+            (-- In Spanish
              text "Sobre mí"
              -- In English
              -- text "About me"
             )
         , paragraph [ Font.justify, spacing 10 ]
-            [
-             -- In Spanish
-             text """Soy un estudiante universitario de informática
+            [ -- In Spanish
+              text """Soy un estudiante universitario de informática
                         culminando mi carrera, la cual disfruto mucho
                         por lo cual siempre amplio mis horizontes en la
                         informatica, ya que tengo muchos campos de
                         intereses relacionados a ella, desde el
                         desarrollo web hasta el de videojuegos, ultimamente
-                        dedicandome más a lo primero, además trabajo en """
-             -- In English
-             -- text """I am a venezolan college student in Computer Sciences
-             --            finishing my career, which enjoy a lot studying it
-             --            constantly  because i have many interests in those
-             --            fields, from Web development until videogames development, althought
-             --            ultimately i dedicate more time at first of them, besides I am work in """
+                        dedicandome más a lo primero, trabajo en """
+
+            -- In English
+            -- text """I am a venezolan college student in Computer Sciences
+            --            finishing my career, which enjoy a lot studying it
+            --            constantly  because i have many interests in those
+            --            fields, from Web development until videogames development, althought
+            --            ultimately i dedicate more time at first of them, besides I am work in """
             , Element.newTabLink [ Font.underline ]
                 { url = "https://ereditadigital.com"
                 , label = text "Eredità Digital"
                 }
-            ,
-             -- In Spanish
-                text """ y soy freelancer en mi tiempo libre, es por esa
-                        razón tomo mi trabajo como algo personal,
-                        “Hacer lo que amo y amar lo que hago” siento
-                        que esa frase es importante para un programador,
-                        por esa razón me gusta enfrentarme a nuevos desafíos
+            , -- In Spanish
+              text """ como administrador de sistemas y soy freelancer
+                        en mi tiempo libre, es por esa razón tomo mi
+                        trabajo como algo personal, “Hacer lo que amo
+                        y amar lo que hago” siento que esa frase es
+                        importante para un programador, por esa razón
+                        me gusta enfrentarme a nuevos desafíos
                         constantemente, siempre tomando en cuenta mi afán
                         por el Software Libre y a los Sistemas Operativos
                         tipo UNIX mientras lo hago."""
-             -- In English
-                -- text """ and now, I am freelancer in my freetime,
-                --         simply “Doing what i love it and loving what i do it”
-                --         actually expressing something important to me, since
-                --         i like learn new techs and programming languages,
-                --         so i think that the curiosity it's a
-                --         weapon for any programmer, and it's the reason because
-                --         i've never stop to learning and i advocate the Open Source
-                --         and Free Software, plus of i love UNIX-like Operating Systems."""
+
+            -- In English
+            -- text """ and I am freelancer in my freetime,
+            --         simply “Doing what i love it and loving what i do it”
+            --         actually expressing something important to me, since
+            --         i like learn new techs and programming languages,
+            --         so i think that the curiosity it's a
+            --         weapon for any programmer, and it's the reason because
+            --         i've never stop to learning and i advocate the Open Source
+            --         and Free Software, plus of i love UNIX-like Operating Systems."""
             ]
         ]
 
 
 proyectos : Element Msg
 proyectos =
-    column [ Element.alignTop, centerX, Element.spacing 20 ]
-        [ row [ Element.spacingXY 10 0 ]
-            [ proyectoPHP
-            , proyectoPHP
+    column [ Element.spacing 20, width fill, height fill ]
+        [ row [ Element.spacingXY 20 0, centerX, centerY, width fill ]
+            [ commonProject "SAICyR" IconsBrands.php
+            , commonProject "Chami" IconsBrands.wordpress
+            , commonProject "React-Calc" IconsBrands.react
             ]
-        , row [ Element.spacingXY 10 0 ]
-            [ proyectoPHP
-            , proyectoPHP
+        , row [ Element.spacingXY 20 0, centerX, centerY, width fill ]
+            [ commonProject "Herramientas" IconsBrands.php
+            , commonProject "Recipes" IconsBrands.php
+            , commonProject "Dollars-App" IconsBrands.react
             ]
         ]
 
@@ -321,28 +327,46 @@ proyectos =
 contacto : Element Msg
 contacto =
     row [ Element.alignTop, width fill, height fill, spacing 10 ]
-        [ linkSocial "Github"
-        , linkSocial "Linkedin"
-        , linkSocial "Correo"
-        , linkSocial "Telegram"
+        [ linkSocial "Github" "https://github.com/it6c65" IconsBrands.github
+        , linkSocial "Linkedin" "https://www.linkedin.com/in/luis-ilarraza-335a34195" IconsBrands.linkedin
+        , linkSocial "Correo" "mailto://ilarrazaluis82@gmail.com" IconsSolid.envelope
+        , linkSocial "Telegram" "https://t.me/it6c65" IconsBrands.telegram
         ]
 
 
-proyectoPHP : Element Msg
-proyectoPHP =
+commonProject : String -> Icon.Icon -> Element Msg
+commonProject name icon =
     column
         [ Background.color darkBg
         , Font.color primaryBrown
         , Border.rounded 6
         , padding 10
+        , height (fill
+                 |> Element.maximum 300
+                 |> Element.minimum 200
+                 )
+        , width (fill
+                |> Element.maximum 300
+                |> Element.minimum 200
+                )
+        , centerX
         ]
-        [ text "Hola"
-        , text "Mundo"
+        [
+         el
+            [ Font.color primaryBrown
+            , centerX
+            , centerY
+            , height (fill |> Element.maximum 120)
+            , width (fill |> Element.maximum 120)
+            , Element.paddingXY 0 15
+            ]
+            (Element.html <| Icon.viewIcon icon)
+         , el [ centerX, centerY ] (text name)
         ]
 
 
-linkSocial : String -> Element Msg
-linkSocial something =
+linkSocial : String -> String -> Icon.Icon -> Element Msg
+linkSocial web url icon =
     column
         [ Font.color primaryBrown
         , height fill
@@ -350,4 +374,18 @@ linkSocial something =
         , centerY
         , Element.mouseOver [ Background.color darkBg ]
         ]
-        [ el [ centerY, centerX ] (text something) ]
+        [ Element.newTabLink [ centerY, height fill ]
+            { url = url
+            , label =
+                column [ height fill ]
+                    [ el
+                        [ centerY
+                        , centerX
+                        , height (fill |> Element.maximum 120)
+                        , Element.paddingXY 0 15
+                        ]
+                        (Element.html <| Icon.viewIcon icon)
+                    , el [ centerY, centerX ] (text web)
+                    ]
+            }
+        ]
