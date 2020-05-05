@@ -30,12 +30,16 @@ import FontAwesome.Icon as Icon
 import FontAwesome.Solid as IconsSolid
 
 
+
+-- Main
+
+
 main =
     Browser.document { init = init, update = update, view = view, subscriptions = subscriptions }
 
 
-type alias Model =
-    { content : Element Msg, active : Bool }
+
+-- init
 
 
 init : () -> ( Model, Cmd Msg )
@@ -43,28 +47,56 @@ init _ =
     ( Model Element.none True, Cmd.none )
 
 
+
+-- Principal Message
+
+
 type Msg
-    = Inicio
-    | Proyectos
-    | Contacto
+    = Home
+    | Services
+    | Projects
+    | Contact
+    | About
+
+
+
+-- Model
+
+
+type alias Model =
+    { content : Element Msg, active : Bool }
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        Inicio ->
-            ( Model welcome True, Cmd.none )
+        Home ->
+            ( Model abilities True, Cmd.none )
 
-        Proyectos ->
+        Services ->
+            ( Model contacto True, Cmd.none )
+
+        Projects ->
             ( Model proyectos True, Cmd.none )
 
-        Contacto ->
+        Contact ->
             ( Model contacto True, Cmd.none )
+
+        About ->
+            ( Model about True, Cmd.none )
+
+
+
+-- Subscriptions
 
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.none
+
+
+
+-- Colors
 
 
 bgProfileColor =
@@ -95,6 +127,10 @@ lightBg =
     rgba255 60 56 54 0.9
 
 
+
+-- Final View
+
+
 view : Model -> Browser.Document Msg
 view model =
     Browser.Document "Portafolio" <|
@@ -111,9 +147,17 @@ view model =
         ]
 
 
+
+-- Page Cover
+
+
 cover model =
     column [ width fill, height fill, centerY ]
         [ profile, actualContent model ]
+
+
+
+-- Profile's Up
 
 
 profile =
@@ -182,6 +226,10 @@ profile =
         ]
 
 
+
+-- Box content of the all content
+
+
 actualContent model =
     column
         [ centerX
@@ -194,6 +242,10 @@ actualContent model =
         [ menubar model
         , model.content
         ]
+
+
+
+-- Navbar
 
 
 menubar model =
@@ -209,9 +261,11 @@ menubar model =
             }
         , spacing 10
         ]
-        [ portaButton "Inicio" (Just Inicio) model
-        , portaButton "Proyectos" (Just Proyectos) model
-        , portaButton "Contacto" (Just Contacto) model
+        [ portaButton "Inicio" (Just Home) model
+        , portaButton "Servicios" (Just Services) model
+        , portaButton "Proyectos" (Just Projects) model
+        , portaButton "Contacto" (Just Contact) model
+        , portaButton "Sobre mí" (Just About) model
         ]
 
 
@@ -242,8 +296,12 @@ portaButton txt action model =
         { onPress = action, label = text txt }
 
 
-welcome : Element Msg
-welcome =
+
+-- Pages Content
+
+
+about : Element Msg
+about =
     Element.textColumn
         [ Element.alignTop
         , centerX
@@ -308,6 +366,117 @@ welcome =
         ]
 
 
+abilities : Element Msg
+abilities =
+    column
+        [ Element.alignTop
+        , centerX
+        , Font.family
+            [ Font.typeface "IBM Plex Serif"
+            ]
+        , Font.color <| primaryBrown
+        , height fill
+        , width fill
+        , Element.scrollbarY
+        ]
+        [ el
+            [ Font.bold
+            , centerX
+            , Element.paddingXY 0 30
+            , Font.underline
+            , Font.size 26
+            ]
+            (-- In Spanish
+             text "Habilidades"
+             -- In English
+             -- text "Abilities"
+            )
+        , column [ width fill, height fill ]
+            [ row [ centerX, spacing 30, width fill ]
+                [ column
+                    [ centerX
+                    , width fill
+                    , spacing 20
+                    , padding 40
+                    , Element.alignTop
+                    ]
+                    [ el
+                        [ Font.color primaryBrown
+                        , Font.underline
+                        , centerX
+                        , Background.color darkBg
+                        , padding 15
+                        ]
+                        (text "Programación")
+                    , abilityProgress "PHP" IconsBrands.php (progressBar 8)
+                    , abilityProgress "JavaScript" IconsBrands.js (progressBar 7)
+                    , abilityProgressImage "Ruby" "imgs/ruby.png" (progressBar 6)
+                    , abilityProgressImage "Elm" "imgs/elm.png" (progressBar 6)
+                    ]
+                , column
+                    [ centerX
+                    , width fill
+                    , spacing 20
+                    , padding 40
+                    , Element.alignTop
+                    ]
+                    [ el
+                        [ Font.color primaryBrown
+                        , Font.underline
+                        , centerX
+                        , Background.color darkBg
+                        , padding 15
+                        ]
+                        (text "Frameworks")
+                    , abilityProgress "React" IconsBrands.react (progressBar 7.5)
+                    , abilityProgress "Vue" IconsBrands.vuejs (progressBar 6)
+                    , abilityProgress "Laravel" IconsBrands.laravel (progressBar 6)
+                    ]
+                ]
+            , row [ centerX, spacing 30, width fill, Element.paddingXY 0 20 ]
+                [ column
+                    [ centerX
+                    , width fill
+                    , spacing 20
+                    , padding 40
+                    , Element.alignTop
+                    ]
+                    [ el
+                        [ Font.color primaryBrown
+                        , Font.underline
+                        , centerX
+                        , Background.color darkBg
+                        , padding 15
+                        ]
+                        (text "Sistemas Operativos")
+                    , abilityProgress "Ubuntu" IconsBrands.ubuntu (progressBar 9)
+                    , abilityProgress "FreeBSD" IconsBrands.freebsd (progressBar 7)
+                    , abilityProgress "CentOS" IconsBrands.centos (progressBar 6)
+                    ]
+                , column
+                    [ centerX
+                    , width fill
+                    , spacing 20
+                    , padding 40
+                    , Element.alignTop
+                    ]
+                    [ el
+                        [ Font.color primaryBrown
+                        , Font.underline
+                        , centerX
+                        , Background.color darkBg
+                        , padding 15
+                        ]
+                        (text "Web")
+                    , abilityProgress "HTML" IconsBrands.html5 (progressBar 10)
+                    , abilityProgress "CSS" IconsBrands.css3 (progressBar 8)
+                    , abilityProgress "Wordpress" IconsBrands.wordpressSimple (progressBar 6)
+                    ]
+                ]
+            ]
+        ]
+
+
 proyectos : Element Msg
 proyectos =
     column [ Element.spacing 20, width fill, height fill ]
@@ -329,9 +498,13 @@ contacto =
     row [ Element.alignTop, width fill, height fill, spacing 10 ]
         [ linkSocial "Github" "https://github.com/it6c65" IconsBrands.github
         , linkSocial "Linkedin" "https://www.linkedin.com/in/luis-ilarraza-335a34195" IconsBrands.linkedin
-        , linkSocial "Correo" "mailto://ilarrazaluis82@gmail.com" IconsSolid.envelope
+        , linkSocial "Correo" "" IconsSolid.envelope
         , linkSocial "Telegram" "https://t.me/it6c65" IconsBrands.telegram
         ]
+
+
+
+-- Components or similars
 
 
 commonProject : String -> Icon.Icon -> Element Msg
@@ -341,18 +514,19 @@ commonProject name icon =
         , Font.color primaryBrown
         , Border.rounded 6
         , padding 10
-        , height (fill
-                 |> Element.maximum 300
-                 |> Element.minimum 200
-                 )
-        , width (fill
+        , height
+            (fill
                 |> Element.maximum 300
                 |> Element.minimum 200
-                )
+            )
+        , width
+            (fill
+                |> Element.maximum 300
+                |> Element.minimum 200
+            )
         , centerX
         ]
-        [
-         el
+        [ el
             [ Font.color primaryBrown
             , centerX
             , centerY
@@ -361,7 +535,7 @@ commonProject name icon =
             , Element.paddingXY 0 15
             ]
             (Element.html <| Icon.viewIcon icon)
-         , el [ centerX, centerY ] (text name)
+        , el [ centerX, centerY ] (text name)
         ]
 
 
@@ -389,3 +563,71 @@ linkSocial web url icon =
                     ]
             }
         ]
+
+
+abilityProgress : String -> Icon.Icon -> String -> Element Msg
+abilityProgress name icon progress =
+    row [ centerX, spacing 20 ]
+        [ column []
+            [ el [ centerX ] (text name)
+            , row [ spacing 20 ]
+                [ el
+                    [ Font.color primaryBrown
+                    , height
+                        (fill
+                            |> Element.maximum 72
+                            |> Element.minimum 60
+                        )
+                    , width
+                        (fill
+                            |> Element.maximum 72
+                            |> Element.minimum 60
+                        )
+                    , centerY
+                    ]
+                    (Element.html <| Icon.viewIcon icon)
+                , el [ centerY ] (text <| progress)
+                ]
+            ]
+        ]
+
+
+abilityProgressImage : String -> String -> String -> Element Msg
+abilityProgressImage name url progress =
+    row [ centerX, spacing 20 ]
+        [ column []
+            [ el [ centerX ] (text name)
+            , row [spacing 20]
+                [ el
+                    [ Font.color primaryBrown
+                    , centerY
+                    ]
+                    (Element.image
+                        [ height
+                            (fill
+                                |> Element.maximum 72
+                                |> Element.minimum 60
+                            )
+                        , width
+                            (fill
+                                |> Element.maximum 72
+                                |> Element.minimum 60
+                            )
+                        ]
+                        { src = url
+                        , description = name
+                        }
+                    )
+                , el [ centerY ] (text <| progress)
+                ]
+            ]
+        ]
+
+
+progressBar : Float -> String
+progressBar points =
+    String.repeat (ceiling points) "█"
+        ++ String.repeat (10 - (ceiling points)) "░"
+        ++ "    "
+        ++ String.fromFloat (points / 10 * 100)
+        ++ "%"
