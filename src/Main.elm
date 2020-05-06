@@ -44,7 +44,7 @@ main =
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( Model Element.none True, Cmd.none )
+    ( Model about True, Cmd.none )
 
 
 
@@ -55,8 +55,8 @@ type Msg
     = Home
     | Services
     | Projects
+    | Abilities
     | Contact
-    | About
 
 
 
@@ -71,19 +71,19 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Home ->
-            ( Model abilities True, Cmd.none )
+            ( Model about True, Cmd.none )
 
         Services ->
-            ( Model contacto True, Cmd.none )
+            ( Model services True, Cmd.none )
 
         Projects ->
-            ( Model proyectos True, Cmd.none )
+            ( Model projects True, Cmd.none )
+
+        Abilities ->
+            ( Model abilities True, Cmd.none )
 
         Contact ->
-            ( Model contacto True, Cmd.none )
-
-        About ->
-            ( Model about True, Cmd.none )
+            ( Model contact True, Cmd.none )
 
 
 
@@ -214,7 +214,7 @@ profile =
                 , Font.size 32
                 , Font.italic
                 ]
-                (text "Programmer & Freelancer")
+                (text "Programmer Freelancer")
             , el
                 [ Font.color <| blue
                 , Element.paddingXY 0 0
@@ -264,8 +264,8 @@ menubar model =
         [ portaButton "Inicio" (Just Home) model
         , portaButton "Servicios" (Just Services) model
         , portaButton "Proyectos" (Just Projects) model
+        , portaButton "Habilidades" (Just Abilities) model
         , portaButton "Contacto" (Just Contact) model
-        , portaButton "Sobre mí" (Just About) model
         ]
 
 
@@ -428,9 +428,11 @@ abilities =
                         , padding 15
                         ]
                         (text "Frameworks")
+                    , abilityProgressImage "CodeIgniter" "imgs/ci.png" (progressBar 8)
                     , abilityProgress "React" IconsBrands.react (progressBar 7.5)
                     , abilityProgress "Vue" IconsBrands.vuejs (progressBar 6)
                     , abilityProgress "Laravel" IconsBrands.laravel (progressBar 6)
+                    , abilityProgressImage "Ruby on Rails" "imgs/rails.png" (progressBar 4)
                     ]
                 ]
             , row [ centerX, spacing 30, width fill, Element.paddingXY 0 20 ]
@@ -449,9 +451,9 @@ abilities =
                         , padding 15
                         ]
                         (text "Sistemas Operativos")
-                    , abilityProgress "Ubuntu" IconsBrands.ubuntu (progressBar 9)
-                    , abilityProgress "FreeBSD" IconsBrands.freebsd (progressBar 7)
-                    , abilityProgress "CentOS" IconsBrands.centos (progressBar 6)
+                    , abilityProgress "Ubuntu" IconsBrands.ubuntu (progressBar 8.5)
+                    , abilityProgress "FreeBSD" IconsBrands.freebsd (progressBar 6)
+                    , abilityProgress "CentOS" IconsBrands.centos (progressBar 3.5)
                     ]
                 , column
                     [ centerX
@@ -477,8 +479,8 @@ abilities =
         ]
 
 
-proyectos : Element Msg
-proyectos =
+projects : Element Msg
+projects =
     column [ Element.spacing 20, width fill, height fill ]
         [ row [ Element.spacingXY 20 0, centerX, centerY, width fill ]
             [ commonProject "SAICyR" IconsBrands.php
@@ -493,13 +495,59 @@ proyectos =
         ]
 
 
-contacto : Element Msg
-contacto =
+contact : Element Msg
+contact =
     row [ Element.alignTop, width fill, height fill, spacing 10 ]
         [ linkSocial "Github" "https://github.com/it6c65" IconsBrands.github
         , linkSocial "Linkedin" "https://www.linkedin.com/in/luis-ilarraza-335a34195" IconsBrands.linkedin
         , linkSocial "Correo" "" IconsSolid.envelope
         , linkSocial "Telegram" "https://t.me/it6c65" IconsBrands.telegram
+        ]
+
+
+services : Element Msg
+services =
+    column
+        [ Element.alignTop
+        , centerX
+        , Font.family [ Font.typeface "IBM Plex Serif" ]
+        , Font.color <| primaryBrown
+        , height fill
+        , width fill
+        , Element.scrollbarY
+        ]
+        [ el
+            [ Font.bold
+            , centerX
+            , Element.paddingXY 0 30
+            , Font.underline
+            , Font.size 26
+            ]
+            (-- In Spanish
+             text "Servicios"
+             -- In English
+             -- text "Services"
+            )
+        , row []
+            [ Element.textColumn [ Font.justify, spacing 10, Element.paddingXY 80 20, Element.alignTop ]
+                [ el[Font.bold](text "• Desarrollo Web")
+                , el [ Element.paddingXY 20 5 ] (text "ø Vista (Front)")
+                , el [ Element.paddingXY 20 5 ] (text "ø Servidor (Back)")
+                , el [ Element.paddingXY 20 5 ] (text "ø Toda (Full)")
+                , el [Font.bold] (text "• Creacion de Temas")
+                , el [ Element.paddingXY 20 5 ] (text "ø Wordpress")
+                , el [ Element.paddingXY 20 5 ] (text "ø OpenCart")
+                , el [ Element.paddingXY 20 5 ] (text "ø Omeka")
+                ]
+            , Element.textColumn [ Font.justify, spacing 10, Element.paddingXY 30 20, Element.alignTop ]
+                [ el [Font.bold] (text "• Diseño de Logos")
+                , el [Font.bold] (text "• Montar aplicacion en servidor")
+                , el [ Element.paddingXY 20 5 ] (text "ø Wordpress")
+                , el [ Element.paddingXY 20 5 ] (text "ø OpenCart")
+                , el [ Element.paddingXY 20 5 ] (text "ø Omeka")
+                , el [Font.bold] (text "• Traducciones")
+                ]
+            ]
         ]
 
 
@@ -597,7 +645,7 @@ abilityProgressImage name url progress =
     row [ centerX, spacing 20 ]
         [ column []
             [ el [ centerX ] (text name)
-            , row [spacing 20]
+            , row [ spacing 20 ]
                 [ el
                     [ Font.color primaryBrown
                     , centerY
@@ -627,7 +675,7 @@ abilityProgressImage name url progress =
 progressBar : Float -> String
 progressBar points =
     String.repeat (ceiling points) "█"
-        ++ String.repeat (10 - (ceiling points)) "░"
+        ++ String.repeat (10 - ceiling points) "░"
         ++ "    "
         ++ String.fromFloat (points / 10 * 100)
         ++ "%"
