@@ -12,7 +12,11 @@
 	<main></main>
 	<script type="text/javascript">
 	 var portfolio = Elm.Main.init({
-	   node: document.querySelector('main')
+	   node: document.querySelector('main'),
+     flags: {
+       width: window.innerWidth,
+       height: window.innerHeight
+     }
 	 });
 	</script>
   </body>

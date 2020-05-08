@@ -1,9 +1,13 @@
 module Main exposing (..)
 
 import Browser
+import Browser.Events exposing (onResize)
 import Element
     exposing
-        ( Element
+        ( Device
+        , DeviceClass(..)
+        , Element
+        , Orientation(..)
         , alignRight
         , centerX
         , centerY
@@ -28,6 +32,7 @@ import Element.Input as Input
 import FontAwesome.Brands as IconsBrands
 import FontAwesome.Icon as Icon
 import FontAwesome.Solid as IconsSolid
+import Html exposing (Html)
 
 
 
@@ -42,9 +47,9 @@ main =
 -- init
 
 
-init : () -> ( Model, Cmd Msg )
-init _ =
-    ( Model about True, Cmd.none )
+init : Flags -> ( Model, Cmd Msg )
+init flags =
+    ( Model about (Element.classifyDevice flags), Cmd.none )
 
 
 
@@ -57,33 +62,43 @@ type Msg
     | Projects
     | Abilities
     | Contact
+    | Responsive Device
 
 
 
 -- Model
 
 
+type alias Flags =
+    { width : Int
+    , height : Int
+    }
+
+
 type alias Model =
-    { content : Element Msg, active : Bool }
+    { content : Element Msg, device : Device }
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Home ->
-            ( Model about True, Cmd.none )
+            ( Model about model.device, Cmd.none )
 
         Services ->
-            ( Model services True, Cmd.none )
+            ( Model services model.device, Cmd.none )
 
         Projects ->
-            ( Model projects True, Cmd.none )
+            ( Model projects model.device, Cmd.none )
 
         Abilities ->
-            ( Model abilities True, Cmd.none )
+            ( Model abilities model.device, Cmd.none )
 
         Contact ->
-            ( Model contact True, Cmd.none )
+            ( Model contact model.device, Cmd.none )
+
+        Responsive device ->
+            ( { model | device = device }, Cmd.none )
 
 
 
@@ -92,7 +107,9 @@ update msg model =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.none
+    onResize <|
+        \width height ->
+            Responsive (Element.classifyDevice { width = width, height = height })
 
 
 
@@ -133,18 +150,51 @@ lightBg =
 
 view : Model -> Browser.Document Msg
 view model =
-    Browser.Document "Portafolio" <|
-        [ Element.layoutWith
-            { options =
-                [ Element.focusStyle <|
-                    Element.FocusStyle (Just primaryBrown) Nothing Nothing
-                ]
-            }
-            [ Background.color <| darkest
-            , Background.image "https://images.unsplash.com/photo-1503252947848-7338d3f92f31"
+    Browser.Document "Portafolio" (body model)
+
+
+body : Model -> List (Html Msg)
+body model =
+    case model.device.class of
+        Phone ->
+            frontMobile model
+
+        _ ->
+            frontDesktop model
+
+
+
+-- Layout Phone
+
+
+frontMobile : Model -> List (Html Msg)
+frontMobile model =
+    [ Element.layoutWith
+        { options =
+            [ Element.focusStyle <|
+                Element.FocusStyle (Just primaryBrown) Nothing Nothing
             ]
-            (cover model)
-        ]
+        }
+        [ Background.color <| darkest ]
+        (cover model)
+    ]
+
+
+
+-- Layout Desktop
+
+
+frontDesktop : Model -> List (Html Msg)
+frontDesktop model =
+    [ Element.layoutWith
+        { options =
+            [ Element.focusStyle <|
+                Element.FocusStyle (Just primaryBrown) Nothing Nothing
+            ]
+        }
+        [ Background.image "https://images.unsplash.com/photo-1503252947848-7338d3f92f31" ]
+        (cover model)
+    ]
 
 
 
@@ -153,77 +203,185 @@ view model =
 
 cover model =
     column [ width fill, height fill, centerY ]
-        [ profile, actualContent model ]
+        [ profile model, actualContent model ]
 
 
 
 -- Profile's Up
 
 
-profile =
-    row
-        [ centerX
-        , Element.alignTop
-        , width (fill |> Element.maximum 800)
-        , Background.color <| bgProfileColor
-        , height (fill |> Element.maximum 275)
-        , Border.rounded 6
-        , Element.spacingXY 0 20
-        ]
-        [ -- HardCoded Spacing xD
-          el [] <| text "     "
-
-        -- Image's Profile
-        , el [] <|
-            image
-                [ Border.rounded 500
-                , Element.clip
-                , width <| Element.px 250
-                , height <| Element.px 250
-                , Border.color <| primaryBrown
-                , Border.width 6
+profile model =
+    case model.device.class of
+        Phone ->
+            row
+                [ centerX
+                , Element.alignTop
+                , width fill
+                , Background.color <| bgProfileColor
+                , height fill
+                , Border.rounded 6
+                , Element.spacingXY 0 20
                 ]
-                { src = "https://avatars0.githubusercontent.com/u/45639906"
-                , description = "Photo_Me"
-                }
+                [ -- Image's Profile
+                  imageProfile model
 
-        -- Letters & title
-        , column
-            [ centerX --, Element.alignTop, Element.paddingXY 0 40
-            , Font.family
-                [ Font.external
-                    { url = "https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,500;0,700;1,500"
-                    , name = "IBM Plex Serif"
+                -- Letters & title
+                , descProfile model
+                ]
+
+        _ ->
+            row
+                [ centerX
+                , Element.alignTop
+                , width (fill |> Element.maximum 800)
+                , Background.color <| bgProfileColor
+                , height (fill |> Element.maximum 275)
+                , Border.rounded 6
+                , Element.spacingXY 0 20
+                ]
+                [ -- HardCoded Spacing xD
+                  el [] <| text "     "
+
+                -- Image's Profile
+                , imageProfile model
+
+                -- Letters & title
+                , descProfile model
+                ]
+
+
+imageProfile model =
+    case model.device.class of
+        Phone ->
+            Element.none
+
+        _ ->
+            el [] <|
+                image
+                    [ Border.rounded 500
+                    , Element.clip
+                    , width <| Element.px 250
+                    , height <| Element.px 250
+                    , Border.color <| primaryBrown
+                    , Border.width 6
+                    ]
+                    { src = "https://avatars0.githubusercontent.com/u/45639906"
+                    , description = "Photo_Me"
                     }
+
+
+descProfile model =
+    case model.device.class of
+        Phone ->
+            Element.textColumn
+                [ centerX
+                , width Element.shrink
+                , Element.alignTop
+                , Element.paddingXY 0 20
+                , Font.family
+                    [ Font.typeface "Times New Roman"
+                    , Font.serif
+                    ]
                 ]
-            ]
-            [ el
-                [ Font.family
+                [ el
+                    [ Font.size 62
+                    , Font.color <| primaryBrown
+                    , Font.center
+                    ]
+                    (text "Luis Ilarraza")
+                , el
+                    [ Font.color <| red
+                    , Element.paddingXY 0 20
+                    , Font.size 32
+                    , Font.italic
+                    , Font.center
+                    ]
+                    (text "Programmer Freelancer")
+                , el
+                    [ Font.color <| blue
+                    , Element.paddingXY 0 0
+                    , Font.size 32
+                    , Font.italic
+                    , Font.center
+                    ]
+                    (text "Full Stack Developer")
+                ]
+
+        Tablet ->
+            column
+                [ centerX
+                , Element.alignTop
+                , Element.paddingXY 0 40
+                , Font.family
                     [ Font.external
-                        { url = "https://fonts.googleapis.com/css2?family=Pacifico"
-                        , name = "Pacifico"
+                        { url = "https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,500;0,700;1,500"
+                        , name = "IBM Plex Serif"
                         }
                     ]
-                , Font.size 62
-                , Font.color <| primaryBrown
                 ]
-                (text "Luis Ilarraza")
-            , el
-                [ Font.color <| red
-                , Element.paddingXY 0 20
-                , Font.size 32
-                , Font.italic
+                [ el
+                    [ Font.family
+                        [ Font.external
+                            { url = "https://fonts.googleapis.com/css2?family=Pacifico"
+                            , name = "Pacifico"
+                            }
+                        ]
+                    , Font.size 62
+                    , Font.color <| primaryBrown
+                    ]
+                    (text "Luis Ilarraza")
+                , el
+                    [ Font.color <| red
+                    , Element.paddingXY 0 20
+                    , Font.size 32
+                    , Font.italic
+                    ]
+                    (text "Programmer Freelancer")
+                , el
+                    [ Font.color <| blue
+                    , Element.paddingXY 0 0
+                    , Font.size 32
+                    , Font.italic
+                    ]
+                    (text "Full Stack Developer")
                 ]
-                (text "Programmer Freelancer")
-            , el
-                [ Font.color <| blue
-                , Element.paddingXY 0 0
-                , Font.size 32
-                , Font.italic
+
+        _ ->
+            column
+                [ centerX
+                , Font.family
+                    [ Font.external
+                        { url = "https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,500;0,700;1,500"
+                        , name = "IBM Plex Serif"
+                        }
+                    ]
                 ]
-                (text "Full Stack Developer")
-            ]
-        ]
+                [ el
+                    [ Font.family
+                        [ Font.external
+                            { url = "https://fonts.googleapis.com/css2?family=Pacifico"
+                            , name = "Pacifico"
+                            }
+                        ]
+                    , Font.size 62
+                    , Font.color <| primaryBrown
+                    ]
+                    (text "Luis Ilarraza")
+                , el
+                    [ Font.color <| red
+                    , Element.paddingXY 0 20
+                    , Font.size 32
+                    , Font.italic
+                    ]
+                    (text "Programmer Freelancer")
+                , el
+                    [ Font.color <| blue
+                    , Element.paddingXY 0 0
+                    , Font.size 32
+                    , Font.italic
+                    ]
+                    (text "Full Stack Developer")
+                ]
 
 
 
@@ -231,17 +389,45 @@ profile =
 
 
 actualContent model =
-    column
-        [ centerX
-        , Element.alignBottom
-        , width (fill |> Element.maximum 1000)
-        , Background.color <| lightBg
-        , height (fill |> Element.maximum 500)
-        , Border.rounded 6
-        ]
-        [ menubar model
-        , model.content
-        ]
+    case model.device.class of
+        Phone ->
+            column
+                [ centerX
+                , Element.alignBottom
+                , width fill
+                , Background.color <| lightBg
+                , height fill
+                , Border.rounded 6
+                ]
+                [ menubar model
+                , model.content
+                ]
+
+        Tablet ->
+            column
+                [ centerX
+                , Element.alignBottom
+                , width fill
+                , Background.color <| lightBg
+                , height fill
+                , Border.rounded 6
+                ]
+                [ menubar model
+                , model.content
+                ]
+
+        _ ->
+            column
+                [ centerX
+                , Element.alignBottom
+                , width (fill |> Element.maximum 1000)
+                , Background.color <| lightBg
+                , height (fill |> Element.maximum 500)
+                , Border.rounded 6
+                ]
+                [ menubar model
+                , model.content
+                ]
 
 
 
@@ -249,51 +435,169 @@ actualContent model =
 
 
 menubar model =
-    row
-        [ Element.alignTop
-        , Background.color <| darkBg
-        , width fill
-        , Border.roundEach
-            { bottomLeft = 0
-            , bottomRight = 0
-            , topLeft = 6
-            , topRight = 6
-            }
-        , spacing 10
-        ]
-        [ portaButton "Inicio" (Just Home) model
-        , portaButton "Servicios" (Just Services) model
-        , portaButton "Proyectos" (Just Projects) model
-        , portaButton "Habilidades" (Just Abilities) model
-        , portaButton "Contacto" (Just Contact) model
-        ]
+    case model.device.class of
+        Phone ->
+            column
+                [ Element.alignTop
+                , Background.color <| darkBg
+                , width fill
+                , Border.roundEach
+                    { bottomLeft = 0
+                    , bottomRight = 0
+                    , topLeft = 6
+                    , topRight = 6
+                    }
+                ]
+                [ portaButton "Inicio" (Just Home) model
+                , portaButton "Servicios" (Just Services) model
+                , portaButton "Proyectos" (Just Projects) model
+                , portaButton "Habilidades" (Just Abilities) model
+                , portaButton "Contacto" (Just Contact) model
+                ]
+
+        Tablet ->
+            case model.device.orientation of
+                Portrait ->
+                    column
+                        [ Element.alignTop
+                        , Background.color <| darkBg
+                        , width fill
+                        , Border.roundEach
+                            { bottomLeft = 0
+                            , bottomRight = 0
+                            , topLeft = 6
+                            , topRight = 6
+                            }
+                        , spacing 10
+                        ]
+                        [ portaButton "Inicio" (Just Home) model
+                        , portaButton "Servicios" (Just Services) model
+                        , portaButton "Proyectos" (Just Projects) model
+                        , portaButton "Habilidades" (Just Abilities) model
+                        , portaButton "Contacto" (Just Contact) model
+                        ]
+
+                Landscape ->
+                    row
+                        [ Element.alignTop
+                        , Background.color <| darkBg
+                        , width fill
+                        , Border.roundEach
+                            { bottomLeft = 0
+                            , bottomRight = 0
+                            , topLeft = 6
+                            , topRight = 6
+                            }
+                        , spacing 10
+                        ]
+                        [ portaButton "Inicio" (Just Home) model
+                        , portaButton "Servicios" (Just Services) model
+                        , portaButton "Proyectos" (Just Projects) model
+                        , portaButton "Habilidades" (Just Abilities) model
+                        , portaButton "Contacto" (Just Contact) model
+                        ]
+
+        _ ->
+            row
+                [ Element.alignTop
+                , Background.color <| darkBg
+                , width fill
+                , Border.roundEach
+                    { bottomLeft = 0
+                    , bottomRight = 0
+                    , topLeft = 6
+                    , topRight = 6
+                    }
+                , spacing 10
+                ]
+                [ portaButton "Inicio" (Just Home) model
+                , portaButton "Servicios" (Just Services) model
+                , portaButton "Proyectos" (Just Projects) model
+                , portaButton "Habilidades" (Just Abilities) model
+                , portaButton "Contacto" (Just Contact) model
+                ]
 
 
 portaButton : String -> Maybe Msg -> Model -> Element Msg
 portaButton txt action model =
-    Input.button
-        [ Background.color <| darkest
-        , Font.color <| primaryBrown
-        , Font.family
-            [ Font.typeface "IBM Plex Serif"
-            , Font.sansSerif
-            ]
-        , padding 10
-        , centerX
-        , Border.widthEach
-            { bottom = 3
-            , left = 0
-            , right = 0
-            , top = 3
-            }
-        , Border.color <| primaryBrown
-        , Element.mouseOver
-            [ Background.color <| primaryBrown
-            , Font.color <| darkest
-            , Border.color <| darkest
-            ]
-        ]
-        { onPress = action, label = text txt }
+    case model.device.class of
+        Phone ->
+            Input.button
+                [ Background.color <| darkest
+                , Font.color <| primaryBrown
+                , Font.family
+                    [ Font.typeface "IBM Plex Serif"
+                    , Font.sansSerif
+                    ]
+                , padding 10
+                , centerX
+                , width fill
+                , Border.widthEach
+                    { bottom = 3
+                    , left = 0
+                    , right = 0
+                    , top = 3
+                    }
+                , Border.color <| primaryBrown
+                , Element.mouseOver
+                    [ Background.color <| primaryBrown
+                    , Font.color <| darkest
+                    , Border.color <| darkest
+                    ]
+                ]
+                { onPress = action, label = text txt }
+
+        Tablet ->
+            Input.button
+                [ Background.color <| darkest
+                , Font.color <| primaryBrown
+                , Font.center
+                , Font.family
+                    [ Font.typeface "IBM Plex Serif"
+                    , Font.sansSerif
+                    ]
+                , padding 10
+                , centerX
+                , width fill
+                , Border.widthEach
+                    { bottom = 3
+                    , left = 0
+                    , right = 0
+                    , top = 3
+                    }
+                , Border.color <| primaryBrown
+                , Element.mouseOver
+                    [ Background.color <| primaryBrown
+                    , Font.color <| darkest
+                    , Border.color <| darkest
+                    ]
+                ]
+                { onPress = action, label = text txt }
+
+        _ ->
+            Input.button
+                [ Background.color <| darkest
+                , Font.color <| primaryBrown
+                , Font.family
+                    [ Font.typeface "IBM Plex Serif"
+                    , Font.sansSerif
+                    ]
+                , padding 10
+                , centerX
+                , Border.widthEach
+                    { bottom = 3
+                    , left = 0
+                    , right = 0
+                    , top = 3
+                    }
+                , Border.color <| primaryBrown
+                , Element.mouseOver
+                    [ Background.color <| primaryBrown
+                    , Font.color <| darkest
+                    , Border.color <| darkest
+                    ]
+                ]
+                { onPress = action, label = text txt }
 
 
 
@@ -309,6 +613,8 @@ about =
             [ Font.typeface "IBM Plex Serif"
             ]
         , Font.color <| primaryBrown
+        , width fill
+        , height fill
         ]
         [ el
             [ Font.bold
@@ -322,7 +628,7 @@ about =
              -- In English
              -- text "About me"
             )
-        , paragraph [ Font.justify, spacing 10 ]
+        , paragraph [ Font.justify, spacing 10, padding 20 ]
             [ -- In Spanish
               text """Soy un estudiante universitario de informática
                         culminando mi carrera, la cual disfruto mucho
@@ -530,29 +836,29 @@ services =
             )
         , row []
             [ Element.textColumn [ Font.justify, spacing 10, Element.paddingXY 80 20, Element.alignTop ]
-                [ el[Font.bold](text "• Desarrollo Web")
+                [ el [ Font.bold ] (text "• Desarrollo Web")
                 , el [ Element.paddingXY 20 5 ] (text "ø Vista (Front)")
                 , el [ Element.paddingXY 20 5 ] (text "ø Servidor (Back)")
                 , el [ Element.paddingXY 20 5 ] (text "ø Toda (Full)")
-                , el [Font.bold] (text "• Creacion de Temas")
+                , el [ Font.bold ] (text "• Creacion de Temas")
                 , el [ Element.paddingXY 20 5 ] (text "ø Wordpress")
                 , el [ Element.paddingXY 20 5 ] (text "ø OpenCart")
                 , el [ Element.paddingXY 20 5 ] (text "ø Omeka")
                 ]
             , Element.textColumn [ Font.justify, spacing 10, Element.paddingXY 30 20, Element.alignTop ]
-                [ el [Font.bold] (text "• Diseño de Logos")
-                , el [Font.bold] (text "• Montar aplicacion en servidor")
+                [ el [ Font.bold ] (text "• Diseño de Logos")
+                , el [ Font.bold ] (text "• Montar aplicacion en servidor")
                 , el [ Element.paddingXY 20 5 ] (text "ø Wordpress")
                 , el [ Element.paddingXY 20 5 ] (text "ø OpenCart")
                 , el [ Element.paddingXY 20 5 ] (text "ø Omeka")
-                , el [Font.bold] (text "• Traducciones")
+                , el [ Font.bold ] (text "• Traducciones")
                 ]
             ]
         ]
 
 
 
--- Components or similars
+-- View helpers
 
 
 commonProject : String -> Icon.Icon -> Element Msg
