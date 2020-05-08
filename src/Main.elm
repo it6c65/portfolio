@@ -86,16 +86,16 @@ update msg model =
             ( Model about model.device, Cmd.none )
 
         Services ->
-            ( Model services model.device, Cmd.none )
+            ( Model (services model) model.device, Cmd.none )
 
         Projects ->
-            ( Model projects model.device, Cmd.none )
+            ( Model (projects model) model.device, Cmd.none )
 
         Abilities ->
-            ( Model abilities model.device, Cmd.none )
+            ( Model (abilities model) model.device, Cmd.none )
 
         Contact ->
-            ( Model contact model.device, Cmd.none )
+            ( Model (contact model) model.device, Cmd.none )
 
         Responsive device ->
             ( { model | device = device }, Cmd.none )
@@ -672,189 +672,390 @@ about =
         ]
 
 
-abilities : Element Msg
-abilities =
-    column
-        [ Element.alignTop
-        , centerX
-        , Font.family
-            [ Font.typeface "IBM Plex Serif"
-            ]
-        , Font.color <| primaryBrown
-        , height fill
-        , width fill
-        , Element.scrollbarY
-        ]
-        [ el
-            [ Font.bold
-            , centerX
-            , Element.paddingXY 0 30
-            , Font.underline
-            , Font.size 26
-            ]
-            (-- In Spanish
-             text "Habilidades"
-             -- In English
-             -- text "Abilities"
-            )
-        , column [ width fill, height fill ]
-            [ row [ centerX, spacing 30, width fill ]
-                [ column
-                    [ centerX
-                    , width fill
-                    , spacing 20
-                    , padding 40
-                    , Element.alignTop
+abilities : Model -> Element Msg
+abilities model =
+    case model.device.class of
+        Phone ->
+            column
+                [ Element.alignTop
+                , centerX
+                , Font.family
+                    [ Font.typeface "IBM Plex Serif"
                     ]
-                    [ el
-                        [ Font.color primaryBrown
-                        , Font.underline
-                        , centerX
-                        , Background.color darkBg
-                        , padding 15
+                , Font.color <| primaryBrown
+                , height fill
+                , width fill
+                , Element.scrollbarY
+                ]
+                [ el
+                    [ Font.bold
+                    , centerX
+                    , Element.paddingXY 0 30
+                    , Font.underline
+                    , Font.size 26
+                    ]
+                    (-- In Spanish
+                     text "Habilidades"
+                     -- In English
+                     -- text "Abilities"
+                    )
+                , column [ width fill, height fill ]
+                    [ column [ centerX, spacing 30, width fill ]
+                        [ column
+                            [ centerX
+                            , width fill
+                            , spacing 20
+                            , padding 40
+                            , Element.alignTop
+                            ]
+                            [ el
+                                [ Font.color primaryBrown
+                                , Font.underline
+                                , centerX
+                                , Background.color darkBg
+                                , padding 15
+                                ]
+                                (text "Programación")
+                            , abilityProgress "PHP" IconsBrands.php (progressBar 8)
+                            , abilityProgress "JavaScript" IconsBrands.js (progressBar 7)
+                            , abilityProgressImage "Ruby" "imgs/ruby.png" (progressBar 6)
+                            , abilityProgressImage "Elm" "imgs/elm.png" (progressBar 6)
+                            ]
+                        , column
+                            [ centerX
+                            , width fill
+                            , spacing 20
+                            , padding 40
+                            , Element.alignTop
+                            ]
+                            [ el
+                                [ Font.color primaryBrown
+                                , Font.underline
+                                , centerX
+                                , Background.color darkBg
+                                , padding 15
+                                ]
+                                (text "Frameworks")
+                            , abilityProgressImage "CodeIgniter" "imgs/ci.png" (progressBar 8)
+                            , abilityProgress "React" IconsBrands.react (progressBar 7.5)
+                            , abilityProgress "Vue" IconsBrands.vuejs (progressBar 6)
+                            , abilityProgress "Laravel" IconsBrands.laravel (progressBar 6)
+                            , abilityProgressImage "Ruby on Rails" "imgs/rails.png" (progressBar 4)
+                            ]
                         ]
-                        (text "Programación")
-                    , abilityProgress "PHP" IconsBrands.php (progressBar 8)
-                    , abilityProgress "JavaScript" IconsBrands.js (progressBar 7)
-                    , abilityProgressImage "Ruby" "imgs/ruby.png" (progressBar 6)
-                    , abilityProgressImage "Elm" "imgs/elm.png" (progressBar 6)
-                    ]
-                , column
-                    [ centerX
-                    , width fill
-                    , spacing 20
-                    , padding 40
-                    , Element.alignTop
-                    ]
-                    [ el
-                        [ Font.color primaryBrown
-                        , Font.underline
-                        , centerX
-                        , Background.color darkBg
-                        , padding 15
+                    , column [ centerX, spacing 30, width fill, Element.paddingXY 0 20 ]
+                        [ column
+                            [ centerX
+                            , width fill
+                            , spacing 20
+                            , padding 40
+                            , Element.alignTop
+                            ]
+                            [ el
+                                [ Font.color primaryBrown
+                                , Font.underline
+                                , centerX
+                                , Background.color darkBg
+                                , padding 15
+                                ]
+                                (text "Sistemas Operativos")
+                            , abilityProgress "Ubuntu" IconsBrands.ubuntu (progressBar 8.5)
+                            , abilityProgress "FreeBSD" IconsBrands.freebsd (progressBar 6)
+                            , abilityProgress "CentOS" IconsBrands.centos (progressBar 3.5)
+                            ]
+                        , column
+                            [ centerX
+                            , width fill
+                            , spacing 20
+                            , padding 40
+                            , Element.alignTop
+                            ]
+                            [ el
+                                [ Font.color primaryBrown
+                                , Font.underline
+                                , centerX
+                                , Background.color darkBg
+                                , padding 15
+                                ]
+                                (text "Web")
+                            , abilityProgress "HTML" IconsBrands.html5 (progressBar 10)
+                            , abilityProgress "CSS" IconsBrands.css3 (progressBar 8)
+                            , abilityProgress "Wordpress" IconsBrands.wordpressSimple (progressBar 6)
+                            ]
                         ]
-                        (text "Frameworks")
-                    , abilityProgressImage "CodeIgniter" "imgs/ci.png" (progressBar 8)
-                    , abilityProgress "React" IconsBrands.react (progressBar 7.5)
-                    , abilityProgress "Vue" IconsBrands.vuejs (progressBar 6)
-                    , abilityProgress "Laravel" IconsBrands.laravel (progressBar 6)
-                    , abilityProgressImage "Ruby on Rails" "imgs/rails.png" (progressBar 4)
                     ]
                 ]
-            , row [ centerX, spacing 30, width fill, Element.paddingXY 0 20 ]
-                [ column
-                    [ centerX
-                    , width fill
-                    , spacing 20
-                    , padding 40
-                    , Element.alignTop
+
+        _ ->
+            column
+                [ Element.alignTop
+                , centerX
+                , Font.family
+                    [ Font.typeface "IBM Plex Serif"
                     ]
-                    [ el
-                        [ Font.color primaryBrown
-                        , Font.underline
-                        , centerX
-                        , Background.color darkBg
-                        , padding 15
+                , Font.color <| primaryBrown
+                , height fill
+                , width fill
+                , Element.scrollbarY
+                ]
+                [ el
+                    [ Font.bold
+                    , centerX
+                    , Element.paddingXY 0 30
+                    , Font.underline
+                    , Font.size 26
+                    ]
+                    (-- In Spanish
+                     text "Habilidades"
+                     -- In English
+                     -- text "Abilities"
+                    )
+                , column [ width fill, height fill ]
+                    [ row [ centerX, spacing 30, width fill ]
+                        [ column
+                            [ centerX
+                            , width fill
+                            , spacing 20
+                            , padding 40
+                            , Element.alignTop
+                            ]
+                            [ el
+                                [ Font.color primaryBrown
+                                , Font.underline
+                                , centerX
+                                , Background.color darkBg
+                                , padding 15
+                                ]
+                                (text "Programación")
+                            , abilityProgress "PHP" IconsBrands.php (progressBar 8)
+                            , abilityProgress "JavaScript" IconsBrands.js (progressBar 7)
+                            , abilityProgressImage "Ruby" "imgs/ruby.png" (progressBar 6)
+                            , abilityProgressImage "Elm" "imgs/elm.png" (progressBar 6)
+                            ]
+                        , column
+                            [ centerX
+                            , width fill
+                            , spacing 20
+                            , padding 40
+                            , Element.alignTop
+                            ]
+                            [ el
+                                [ Font.color primaryBrown
+                                , Font.underline
+                                , centerX
+                                , Background.color darkBg
+                                , padding 15
+                                ]
+                                (text "Frameworks")
+                            , abilityProgressImage "CodeIgniter" "imgs/ci.png" (progressBar 8)
+                            , abilityProgress "React" IconsBrands.react (progressBar 7.5)
+                            , abilityProgress "Vue" IconsBrands.vuejs (progressBar 6)
+                            , abilityProgress "Laravel" IconsBrands.laravel (progressBar 6)
+                            , abilityProgressImage "Ruby on Rails" "imgs/rails.png" (progressBar 4)
+                            ]
                         ]
-                        (text "Sistemas Operativos")
-                    , abilityProgress "Ubuntu" IconsBrands.ubuntu (progressBar 8.5)
-                    , abilityProgress "FreeBSD" IconsBrands.freebsd (progressBar 6)
-                    , abilityProgress "CentOS" IconsBrands.centos (progressBar 3.5)
-                    ]
-                , column
-                    [ centerX
-                    , width fill
-                    , spacing 20
-                    , padding 40
-                    , Element.alignTop
-                    ]
-                    [ el
-                        [ Font.color primaryBrown
-                        , Font.underline
-                        , centerX
-                        , Background.color darkBg
-                        , padding 15
+                    , row [ centerX, spacing 30, width fill, Element.paddingXY 0 20 ]
+                        [ column
+                            [ centerX
+                            , width fill
+                            , spacing 20
+                            , padding 40
+                            , Element.alignTop
+                            ]
+                            [ el
+                                [ Font.color primaryBrown
+                                , Font.underline
+                                , centerX
+                                , Background.color darkBg
+                                , padding 15
+                                ]
+                                (text "Sistemas Operativos")
+                            , abilityProgress "Ubuntu" IconsBrands.ubuntu (progressBar 8.5)
+                            , abilityProgress "FreeBSD" IconsBrands.freebsd (progressBar 6)
+                            , abilityProgress "CentOS" IconsBrands.centos (progressBar 3.5)
+                            ]
+                        , column
+                            [ centerX
+                            , width fill
+                            , spacing 20
+                            , padding 40
+                            , Element.alignTop
+                            ]
+                            [ el
+                                [ Font.color primaryBrown
+                                , Font.underline
+                                , centerX
+                                , Background.color darkBg
+                                , padding 15
+                                ]
+                                (text "Web")
+                            , abilityProgress "HTML" IconsBrands.html5 (progressBar 10)
+                            , abilityProgress "CSS" IconsBrands.css3 (progressBar 8)
+                            , abilityProgress "Wordpress" IconsBrands.wordpressSimple (progressBar 6)
+                            ]
                         ]
-                        (text "Web")
-                    , abilityProgress "HTML" IconsBrands.html5 (progressBar 10)
-                    , abilityProgress "CSS" IconsBrands.css3 (progressBar 8)
-                    , abilityProgress "Wordpress" IconsBrands.wordpressSimple (progressBar 6)
                     ]
                 ]
-            ]
-        ]
 
 
-projects : Element Msg
-projects =
-    column [ Element.spacing 20, width fill, height fill ]
-        [ row [ Element.spacingXY 20 0, centerX, centerY, width fill ]
-            [ commonProject "SAICyR" IconsBrands.php
-            , commonProject "Chami" IconsBrands.wordpress
-            , commonProject "React-Calc" IconsBrands.react
-            ]
-        , row [ Element.spacingXY 20 0, centerX, centerY, width fill ]
-            [ commonProject "Herramientas" IconsBrands.php
-            , commonProject "Recipes" IconsBrands.php
-            , commonProject "Dollars-App" IconsBrands.react
-            ]
-        ]
-
-
-contact : Element Msg
-contact =
-    row [ Element.alignTop, width fill, height fill, spacing 10 ]
-        [ linkSocial "Github" "https://github.com/it6c65" IconsBrands.github
-        , linkSocial "Linkedin" "https://www.linkedin.com/in/luis-ilarraza-335a34195" IconsBrands.linkedin
-        , linkSocial "Correo" "" IconsSolid.envelope
-        , linkSocial "Telegram" "https://t.me/it6c65" IconsBrands.telegram
-        ]
-
-
-services : Element Msg
-services =
-    column
-        [ Element.alignTop
-        , centerX
-        , Font.family [ Font.typeface "IBM Plex Serif" ]
-        , Font.color <| primaryBrown
-        , height fill
-        , width fill
-        , Element.scrollbarY
-        ]
-        [ el
-            [ Font.bold
-            , centerX
-            , Element.paddingXY 0 30
-            , Font.underline
-            , Font.size 26
-            ]
-            (-- In Spanish
-             text "Servicios"
-             -- In English
-             -- text "Services"
-            )
-        , row []
-            [ Element.textColumn [ Font.justify, spacing 10, Element.paddingXY 80 20, Element.alignTop ]
-                [ el [ Font.bold ] (text "• Desarrollo Web")
-                , el [ Element.paddingXY 20 5 ] (text "ø Vista (Front)")
-                , el [ Element.paddingXY 20 5 ] (text "ø Servidor (Back)")
-                , el [ Element.paddingXY 20 5 ] (text "ø Toda (Full)")
-                , el [ Font.bold ] (text "• Creacion de Temas")
-                , el [ Element.paddingXY 20 5 ] (text "ø Wordpress")
-                , el [ Element.paddingXY 20 5 ] (text "ø OpenCart")
-                , el [ Element.paddingXY 20 5 ] (text "ø Omeka")
+projects : Model -> Element Msg
+projects model =
+    case model.device.class of
+        Phone ->
+            column [ Element.spacing 20, width fill, height fill ]
+                [ el
+                    [ Font.bold
+                    , centerX
+                    , Element.paddingXY 0 30
+                    , Font.underline
+                    , Font.size 26
+                    , Font.color <| primaryBrown
+                    ]
+                    (text "Proyectos")
+                , commonProject "SAICyR" IconsBrands.php
+                , commonProject "Chami" IconsBrands.wordpress
+                , commonProject "React-Calc" IconsBrands.react
+                , commonProject "Herramientas" IconsBrands.php
+                , commonProject "Recipes" IconsBrands.php
+                , commonProject "Dollars-App" IconsBrands.react
                 ]
-            , Element.textColumn [ Font.justify, spacing 10, Element.paddingXY 30 20, Element.alignTop ]
-                [ el [ Font.bold ] (text "• Diseño de Logos")
-                , el [ Font.bold ] (text "• Montar aplicacion en servidor")
-                , el [ Element.paddingXY 20 5 ] (text "ø Wordpress")
-                , el [ Element.paddingXY 20 5 ] (text "ø OpenCart")
-                , el [ Element.paddingXY 20 5 ] (text "ø Omeka")
-                , el [ Font.bold ] (text "• Traducciones")
+
+        _ ->
+            column [ Element.spacing 20, width fill, height fill, Element.scrollbarY ]
+                [ row [ Element.spacingXY 20 0, centerX, centerY, width fill ]
+                    [ el
+                        [ Font.bold
+                        , centerX
+                        , Element.paddingXY 0 30
+                        , Font.underline
+                        , Font.size 26
+                        , Font.color <| primaryBrown
+                        ]
+                        (text "Proyectos")
+                    ]
+                , row [ Element.spacingXY 20 0, centerX, centerY, width fill ]
+                    [ commonProject "SAICyR" IconsBrands.php
+                    , commonProject "Chami" IconsBrands.wordpress
+                    , commonProject "React-Calc" IconsBrands.react
+                    ]
+                , row [ Element.spacingXY 20 0, centerX, centerY, width fill ]
+                    [ commonProject "Herramientas" IconsBrands.php
+                    , commonProject "Recipes" IconsBrands.php
+                    , commonProject "Dollars-App" IconsBrands.react
+                    ]
                 ]
-            ]
-        ]
+
+
+contact : Model -> Element Msg
+contact model =
+    case model.device.class of
+        Phone ->
+            column [ Element.alignTop, width fill, height fill, spacing 10 ]
+                [ linkSocial "Github" "https://github.com/it6c65" IconsBrands.github
+                , linkSocial "Linkedin" "https://www.linkedin.com/in/luis-ilarraza-335a34195" IconsBrands.linkedin
+                , linkSocial "Correo" "" IconsSolid.envelope
+                , linkSocial "Telegram" "https://t.me/it6c65" IconsBrands.telegram
+                ]
+
+        _ ->
+            row [ Element.alignTop, width fill, height fill, spacing 10 ]
+                [ linkSocial "Github" "https://github.com/it6c65" IconsBrands.github
+                , linkSocial "Linkedin" "https://www.linkedin.com/in/luis-ilarraza-335a34195" IconsBrands.linkedin
+                , linkSocial "Correo" "" IconsSolid.envelope
+                , linkSocial "Telegram" "https://t.me/it6c65" IconsBrands.telegram
+                ]
+
+
+services : Model -> Element Msg
+services model =
+    case model.device.class of
+        Phone ->
+            column
+                [ Element.alignTop
+                , centerX
+                , Font.family [ Font.typeface "IBM Plex Serif" ]
+                , Font.color <| primaryBrown
+                , height fill
+                , width fill
+                , Element.scrollbarY
+                ]
+                [ el
+                    [ Font.bold
+                    , centerX
+                    , Element.paddingXY 0 30
+                    , Font.underline
+                    , Font.size 26
+                    ]
+                    (-- In Spanish
+                     text "Servicios"
+                     -- In English
+                     -- text "Services"
+                    )
+                , column []
+                    [ Element.textColumn [ Font.justify, spacing 10 ]
+                        [ el [ Font.bold ] (text "• Desarrollo Web")
+                        , el [ Element.paddingXY 20 5 ] (text "ø Vista (Front)")
+                        , el [ Element.paddingXY 20 5 ] (text "ø Servidor (Back)")
+                        , el [ Element.paddingXY 20 5 ] (text "ø Toda (Full)")
+                        , el [ Font.bold ] (text "• Creacion de Temas")
+                        , el [ Element.paddingXY 20 5 ] (text "ø Wordpress")
+                        , el [ Element.paddingXY 20 5 ] (text "ø OpenCart")
+                        , el [ Element.paddingXY 20 5 ] (text "ø Omeka")
+                        ]
+                    , Element.textColumn [ Font.justify, spacing 10 ]
+                        [ el [ Font.bold ] (text "• Diseño de Logos")
+                        , el [ Font.bold ] (text "• Montar aplicacion en servidor")
+                        , el [ Element.paddingXY 20 5 ] (text "ø Wordpress")
+                        , el [ Element.paddingXY 20 5 ] (text "ø OpenCart")
+                        , el [ Element.paddingXY 20 5 ] (text "ø Omeka")
+                        , el [ Font.bold ] (text "• Traducciones")
+                        ]
+                    ]
+                ]
+
+        _ ->
+            column
+                [ Element.alignTop
+                , centerX
+                , Font.family [ Font.typeface "IBM Plex Serif" ]
+                , Font.color <| primaryBrown
+                , height fill
+                , width fill
+                , Element.scrollbarY
+                ]
+                [ el
+                    [ Font.bold
+                    , centerX
+                    , Element.paddingXY 0 30
+                    , Font.underline
+                    , Font.size 26
+                    ]
+                    (-- In Spanish
+                     text "Servicios"
+                     -- In English
+                     -- text "Services"
+                    )
+                , row []
+                    [ Element.textColumn [ Font.justify, spacing 10, Element.paddingXY 80 20, Element.alignTop ]
+                        [ el [ Font.bold ] (text "• Desarrollo Web")
+                        , el [ Element.paddingXY 20 5 ] (text "ø Vista (Front)")
+                        , el [ Element.paddingXY 20 5 ] (text "ø Servidor (Back)")
+                        , el [ Element.paddingXY 20 5 ] (text "ø Toda (Full)")
+                        , el [ Font.bold ] (text "• Creacion de Temas")
+                        , el [ Element.paddingXY 20 5 ] (text "ø Wordpress")
+                        , el [ Element.paddingXY 20 5 ] (text "ø OpenCart")
+                        , el [ Element.paddingXY 20 5 ] (text "ø Omeka")
+                        ]
+                    , Element.textColumn [ Font.justify, spacing 10, Element.paddingXY 30 20, Element.alignTop ]
+                        [ el [ Font.bold ] (text "• Diseño de Logos")
+                        , el [ Font.bold ] (text "• Montar aplicacion en servidor")
+                        , el [ Element.paddingXY 20 5 ] (text "ø Wordpress")
+                        , el [ Element.paddingXY 20 5 ] (text "ø OpenCart")
+                        , el [ Element.paddingXY 20 5 ] (text "ø Omeka")
+                        , el [ Font.bold ] (text "• Traducciones")
+                        ]
+                    ]
+                ]
 
 
 
@@ -899,6 +1100,7 @@ linkSocial web url icon =
         [ Font.color primaryBrown
         , height fill
         , width fill
+        , padding 10
         , centerY
         , Element.mouseOver [ Background.color darkBg ]
         ]
