@@ -908,16 +908,17 @@ projects model =
                     , centerX
                     , Element.paddingXY 0 30
                     , Font.underline
+                    , Font.family [ Font.typeface "IBM Plex Serif" ]
                     , Font.size 26
                     , Font.color <| primaryBrown
                     ]
                     (text "Proyectos")
                 , commonProject "SAICyR" IconsBrands.php "https://github.com/it6c65/SAICyR"
                 , commonProject "Chami" IconsBrands.wordpress ""
-                , commonProject "React-Calc" IconsBrands.react "https://github.com/it6c65/calc-react"
+                , commonProject "React-Calc" IconsBrands.react "https://it6c65.github.io/calc-react"
                 , commonProject "Herramientas" IconsBrands.php "https://github.com/it6c65/sdgh"
                 , commonProject "Recipes" IconsBrands.php ""
-                , commonProject "Dollars-App" IconsBrands.react "https://github.com/it6c65/dollars-app"
+                , commonProject "Dollars-App" IconsBrands.react "https://it6c65.github.io/dollars-app"
                 ]
 
         _ ->
@@ -929,6 +930,7 @@ projects model =
                         , Element.paddingXY 0 30
                         , Font.underline
                         , Font.size 26
+                        , Font.family [ Font.typeface "IBM Plex Serif" ]
                         , Font.color <| primaryBrown
                         ]
                         (text "Proyectos")
@@ -936,12 +938,12 @@ projects model =
                 , row [ Element.spacingXY 20 0, centerX, centerY, width fill ]
                     [ commonProject "SAICyR" IconsBrands.php "https://github.com/it6c65/SAICyR"
                     , commonProject "Chami" IconsBrands.wordpress ""
-                    , commonProject "React-Calc" IconsBrands.react "https://github.com/it6c65/calc-react"
+                    , commonProject "React-Calc" IconsBrands.react "https://it6c65.github.io/calc-react"
                     ]
                 , row [ Element.spacingXY 20 0, centerX, centerY, width fill ]
                     [ commonProject "Herramientas" IconsBrands.php "https://github.com/it6c65/sdgh"
                     , commonProject "Recipes" IconsBrands.php ""
-                    , commonProject "Dollars-App" IconsBrands.react "https://github.com/it6c65/dollars-app"
+                    , commonProject "Dollars-App" IconsBrands.react "https://it6c65.github.io/dollars-app"
                     ]
                 ]
 
@@ -953,7 +955,7 @@ contact model =
             column [ Element.alignTop, width fill, height fill, spacing 10 ]
                 [ linkSocial "Github" "https://github.com/it6c65" IconsBrands.github
                 , linkSocial "Linkedin" "https://www.linkedin.com/in/luis-ilarraza-335a34195" IconsBrands.linkedin
-                , linkSocial "Correo" "" IconsSolid.envelope
+                , linkSocial "Correo" "mailto://enrique_ila@hotmail.com" IconsSolid.envelope
                 , linkSocial "Telegram" "https://t.me/it6c65" IconsBrands.telegram
                 ]
 
@@ -961,7 +963,7 @@ contact model =
             row [ Element.alignTop, width fill, height fill, spacing 10 ]
                 [ linkSocial "Github" "https://github.com/it6c65" IconsBrands.github
                 , linkSocial "Linkedin" "https://www.linkedin.com/in/luis-ilarraza-335a34195" IconsBrands.linkedin
-                , linkSocial "Correo" "" IconsSolid.envelope
+                , linkSocial "Correo" "mailto://enrique_ila@hotmail.com" IconsSolid.envelope
                 , linkSocial "Telegram" "https://t.me/it6c65" IconsBrands.telegram
                 ]
 

@@ -1,7 +1,7 @@
 input = src/Main.elm
 
 bundle.js : $(input)
-	elm make $(input) --output=bundle.js
+	elm make $(input) --optimize --output=bundle.js
 
 .PHONY : clean build cleanall
 
