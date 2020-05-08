@@ -192,7 +192,7 @@ frontDesktop model =
                 Element.FocusStyle (Just primaryBrown) Nothing Nothing
             ]
         }
-        [ Background.image "https://images.unsplash.com/photo-1503252947848-7338d3f92f31" ]
+        [ Background.image "imgs/bg.jpg" ]
         (cover model)
     ]
 
@@ -265,7 +265,7 @@ imageProfile model =
                     , Border.color <| primaryBrown
                     , Border.width 6
                     ]
-                    { src = "https://avatars0.githubusercontent.com/u/45639906"
+                    { src = "imgs/me.jpg"
                     , description = "Photo_Me"
                     }
 
@@ -912,12 +912,12 @@ projects model =
                     , Font.color <| primaryBrown
                     ]
                     (text "Proyectos")
-                , commonProject "SAICyR" IconsBrands.php
-                , commonProject "Chami" IconsBrands.wordpress
-                , commonProject "React-Calc" IconsBrands.react
-                , commonProject "Herramientas" IconsBrands.php
-                , commonProject "Recipes" IconsBrands.php
-                , commonProject "Dollars-App" IconsBrands.react
+                , commonProject "SAICyR" IconsBrands.php "https://github.com/it6c65/SAICyR"
+                , commonProject "Chami" IconsBrands.wordpress ""
+                , commonProject "React-Calc" IconsBrands.react "https://github.com/it6c65/calc-react"
+                , commonProject "Herramientas" IconsBrands.php "https://github.com/it6c65/sdgh"
+                , commonProject "Recipes" IconsBrands.php ""
+                , commonProject "Dollars-App" IconsBrands.react "https://github.com/it6c65/dollars-app"
                 ]
 
         _ ->
@@ -934,14 +934,14 @@ projects model =
                         (text "Proyectos")
                     ]
                 , row [ Element.spacingXY 20 0, centerX, centerY, width fill ]
-                    [ commonProject "SAICyR" IconsBrands.php
-                    , commonProject "Chami" IconsBrands.wordpress
-                    , commonProject "React-Calc" IconsBrands.react
+                    [ commonProject "SAICyR" IconsBrands.php "https://github.com/it6c65/SAICyR"
+                    , commonProject "Chami" IconsBrands.wordpress ""
+                    , commonProject "React-Calc" IconsBrands.react "https://github.com/it6c65/calc-react"
                     ]
                 , row [ Element.spacingXY 20 0, centerX, centerY, width fill ]
-                    [ commonProject "Herramientas" IconsBrands.php
-                    , commonProject "Recipes" IconsBrands.php
-                    , commonProject "Dollars-App" IconsBrands.react
+                    [ commonProject "Herramientas" IconsBrands.php "https://github.com/it6c65/sdgh"
+                    , commonProject "Recipes" IconsBrands.php ""
+                    , commonProject "Dollars-App" IconsBrands.react "https://github.com/it6c65/dollars-app"
                     ]
                 ]
 
@@ -1062,36 +1062,82 @@ services model =
 -- View helpers
 
 
-commonProject : String -> Icon.Icon -> Element Msg
-commonProject name icon =
-    column
-        [ Background.color darkBg
-        , Font.color primaryBrown
-        , Border.rounded 6
-        , padding 10
-        , height
-            (fill
-                |> Element.maximum 300
-                |> Element.minimum 200
-            )
-        , width
-            (fill
-                |> Element.maximum 300
-                |> Element.minimum 200
-            )
-        , centerX
-        ]
-        [ el
-            [ Font.color primaryBrown
+commonProject : String -> Icon.Icon -> String -> Element Msg
+commonProject name icon url =
+    if String.isEmpty url then
+        column
+            [ Background.color darkBg
+            , Font.color primaryBrown
+            , Border.rounded 6
+            , padding 10
+            , spacing 10
+            , height
+                (fill
+                    |> Element.maximum 300
+                    |> Element.minimum 200
+                )
+            , width
+                (fill
+                    |> Element.maximum 300
+                    |> Element.minimum 200
+                )
             , centerX
-            , centerY
-            , height (fill |> Element.maximum 120)
-            , width (fill |> Element.maximum 120)
-            , Element.paddingXY 0 15
             ]
-            (Element.html <| Icon.viewIcon icon)
-        , el [ centerX, centerY ] (text name)
-        ]
+            [ el
+                [ Font.color primaryBrown
+                , centerX
+                , centerY
+                , height (fill |> Element.maximum 120)
+                , width (fill |> Element.maximum 120)
+                , Element.paddingXY 0 15
+                ]
+                (Element.html <| Icon.viewIcon icon)
+            , el [ centerX, centerY ] (text name)
+            , el [ centerX
+                 , centerY
+                 , Font.color <| darkBg
+                 , Font.size 12
+                 , Background.color <| primaryBrown
+                 , Border.rounded 10
+                 , padding 4
+                 ] (text "En Construccion")
+            ]
+
+    else
+        column
+            [ Background.color darkBg
+            , Font.color primaryBrown
+            , Border.rounded 6
+            , padding 10
+            , height
+                (fill
+                    |> Element.maximum 300
+                    |> Element.minimum 200
+                )
+            , width
+                (fill
+                    |> Element.maximum 300
+                    |> Element.minimum 200
+                )
+            , centerX
+            ]
+            [ Element.newTabLink [ width fill, height fill ]
+                { url = url
+                , label =
+                    column [ width fill, height fill ]
+                        [ el
+                            [ Font.color primaryBrown
+                            , centerX
+                            , centerY
+                            , height (fill |> Element.maximum 120)
+                            , width (fill |> Element.maximum 120)
+                            , Element.paddingXY 0 15
+                            ]
+                            (Element.html <| Icon.viewIcon icon)
+                        , el [ centerX, centerY ] (text name)
+                        ]
+                }
+            ]
 
 
 linkSocial : String -> String -> Icon.Icon -> Element Msg
