@@ -288,7 +288,7 @@ descProfile model =
                     , Font.color <| primaryBrown
                     , Font.center
                     ]
-                    (text "Luis Ilarraza")
+                    (text my.name)
                 , el
                     [ Font.color <| red
                     , Element.paddingXY 0 20
@@ -296,7 +296,7 @@ descProfile model =
                     , Font.italic
                     , Font.center
                     ]
-                    (text "Programmer Freelancer")
+                    (text my.job)
                 , el
                     [ Font.color <| blue
                     , Element.paddingXY 0 0
@@ -304,7 +304,7 @@ descProfile model =
                     , Font.italic
                     , Font.center
                     ]
-                    (text "Full Stack Developer")
+                    (text my.profession)
                 ]
 
         Tablet ->
@@ -329,21 +329,21 @@ descProfile model =
                     , Font.size 62
                     , Font.color <| primaryBrown
                     ]
-                    (text "Luis Ilarraza")
+                    (text my.name)
                 , el
                     [ Font.color <| red
                     , Element.paddingXY 0 20
                     , Font.size 32
                     , Font.italic
                     ]
-                    (text "Programmer Freelancer")
+                    (text my.job)
                 , el
                     [ Font.color <| blue
                     , Element.paddingXY 0 0
                     , Font.size 32
                     , Font.italic
                     ]
-                    (text "Full Stack Developer")
+                    (text my.profession)
                 ]
 
         _ ->
@@ -366,21 +366,21 @@ descProfile model =
                     , Font.size 62
                     , Font.color <| primaryBrown
                     ]
-                    (text "Luis Ilarraza")
+                    (text my.name)
                 , el
                     [ Font.color <| red
                     , Element.paddingXY 0 20
                     , Font.size 32
                     , Font.italic
                     ]
-                    (text "Programmer Freelancer")
+                    (text my.job)
                 , el
                     [ Font.color <| blue
                     , Element.paddingXY 0 0
                     , Font.size 32
                     , Font.italic
                     ]
-                    (text "Full Stack Developer")
+                    (text my.profession)
                 ]
 
 
@@ -913,12 +913,12 @@ projects model =
                     , Font.color <| primaryBrown
                     ]
                     (text "Proyectos")
-                , commonProject "SAICyR" IconsBrands.php "https://github.com/it6c65/SAICyR"
+                , commonProject "SAICyR" IconsBrands.php (my.git ++ "/SAICyR")
                 , commonProject "Chami" IconsBrands.wordpress ""
-                , commonProject "React-Calc" IconsBrands.react "https://it6c65.github.io/calc-react"
-                , commonProject "Herramientas" IconsBrands.php "https://github.com/it6c65/sdgh"
+                , commonProject "React-Calc" IconsBrands.react (my.ghPage ++ "calc-react")
+                , commonProject "Herramientas" IconsBrands.php (my.git ++ "/sdgh")
                 , commonProject "Recipes" IconsBrands.php ""
-                , commonProject "Dollars-App" IconsBrands.react "https://it6c65.github.io/dollars-app"
+                , commonProject "Dollars-App" IconsBrands.react (my.ghPage ++ "dollars-app")
                 ]
 
         _ ->
@@ -936,14 +936,14 @@ projects model =
                         (text "Proyectos")
                     ]
                 , row [ Element.spacingXY 20 0, centerX, centerY, width fill ]
-                    [ commonProject "SAICyR" IconsBrands.php "https://github.com/it6c65/SAICyR"
+                    [ commonProject "SAICyR" IconsBrands.php (my.git ++ "/SAICyR")
                     , commonProject "Chami" IconsBrands.wordpress ""
-                    , commonProject "React-Calc" IconsBrands.react "https://it6c65.github.io/calc-react"
+                    , commonProject "React-Calc" IconsBrands.react (my.ghPage ++ "calc-react")
                     ]
                 , row [ Element.spacingXY 20 0, centerX, centerY, width fill ]
-                    [ commonProject "Herramientas" IconsBrands.php "https://github.com/it6c65/sdgh"
+                    [ commonProject "Herramientas" IconsBrands.php (my.git ++ "/sdgh")
                     , commonProject "Recipes" IconsBrands.php ""
-                    , commonProject "Dollars-App" IconsBrands.react "https://it6c65.github.io/dollars-app"
+                    , commonProject "Dollars-App" IconsBrands.react (my.ghPage ++ "dollars-app")
                     ]
                 ]
 
@@ -953,18 +953,18 @@ contact model =
     case model.device.class of
         Phone ->
             column [ Element.alignTop, width fill, height fill, spacing 10 ]
-                [ linkSocial "Github" "https://github.com/it6c65" IconsBrands.github
-                , linkSocial "Linkedin" "https://www.linkedin.com/in/luis-ilarraza-335a34195" IconsBrands.linkedin
-                , linkSocial "Correo" "mailto://enrique_ila@hotmail.com" IconsSolid.envelope
-                , linkSocial "Telegram" "https://t.me/it6c65" IconsBrands.telegram
+                [ linkSocial "Github" my.git IconsBrands.github
+                , linkSocial "Linkedin" my.linkedin IconsBrands.linkedin
+                , linkSocial "Correo" my.email IconsSolid.envelope
+                , linkSocial "Telegram" my.telegram IconsBrands.telegram
                 ]
 
         _ ->
             row [ Element.alignTop, width fill, height fill, spacing 10 ]
-                [ linkSocial "Github" "https://github.com/it6c65" IconsBrands.github
-                , linkSocial "Linkedin" "https://www.linkedin.com/in/luis-ilarraza-335a34195" IconsBrands.linkedin
-                , linkSocial "Correo" "mailto://enrique_ila@hotmail.com" IconsSolid.envelope
-                , linkSocial "Telegram" "https://t.me/it6c65" IconsBrands.telegram
+                [ linkSocial "Github" my.git IconsBrands.github
+                , linkSocial "Linkedin" my.linkedin IconsBrands.linkedin
+                , linkSocial "Correo" my.email IconsSolid.envelope
+                , linkSocial "Telegram" my.telegram IconsBrands.telegram
                 ]
 
 
@@ -1095,14 +1095,16 @@ commonProject name icon url =
                 ]
                 (Element.html <| Icon.viewIcon icon)
             , el [ centerX, centerY ] (text name)
-            , el [ centerX
-                 , centerY
-                 , Font.color <| darkBg
-                 , Font.size 12
-                 , Background.color <| primaryBrown
-                 , Border.rounded 10
-                 , padding 4
-                 ] (text "En Construccion")
+            , el
+                [ centerX
+                , centerY
+                , Font.color <| darkBg
+                , Font.size 12
+                , Background.color <| primaryBrown
+                , Border.rounded 10
+                , padding 4
+                ]
+                (text "En Construccion")
             ]
 
     else
@@ -1235,3 +1237,27 @@ progressBar points =
         ++ "    "
         ++ String.fromFloat (points / 10 * 100)
         ++ "%"
+
+
+
+-- Static Data
+
+
+protocol =
+    { mail = "mailto://"
+    , link = "https://"
+    }
+
+
+my =
+    { name = "Luis ilarraza"
+    , job = "Programmer Freelancer"
+    , profession = "Full Stack Developer"
+    , ghPage = protocol.link ++ "it6c65.github.io/"
+
+    -- Social Links
+    , telegram = protocol.link ++ "t.me/it6c65"
+    , linkedin = protocol.link ++ "www.linkedin.com/in/luis-ilarraza-335a34195"
+    , git = protocol.link ++ "github.com/it6c65"
+    , email = protocol.mail ++ "enrique_ila@hotmail.com"
+    }
