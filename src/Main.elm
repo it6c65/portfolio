@@ -33,6 +33,7 @@ import FontAwesome.Brands as IconsBrands
 import FontAwesome.Icon as Icon
 import FontAwesome.Solid as IconsSolid
 import Html exposing (Html)
+import Color
 
 
 
@@ -49,7 +50,7 @@ main =
 
 init : Flags -> ( Model, Cmd Msg )
 init flags =
-    ( Model about (Element.classifyDevice flags), Cmd.none )
+    ( Model about (Element.classifyDevice flags) (String.left 2 flags.lang), Cmd.none )
 
 
 
@@ -72,30 +73,31 @@ type Msg
 type alias Flags =
     { width : Int
     , height : Int
+    , lang : String
     }
 
 
 type alias Model =
-    { content : Element Msg, device : Device }
+    { content : Element Msg, device : Device, lang : String }
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Home ->
-            ( Model about model.device, Cmd.none )
+            ( Model about model.device model.lang, Cmd.none )
 
         Services ->
-            ( Model (services model) model.device, Cmd.none )
+            ( Model (services model) model.device model.lang, Cmd.none )
 
         Projects ->
-            ( Model (projects model) model.device, Cmd.none )
+            ( Model (projects model) model.device model.lang, Cmd.none )
 
         Abilities ->
-            ( Model (abilities model) model.device, Cmd.none )
+            ( Model (abilities model) model.device model.lang, Cmd.none )
 
         Contact ->
-            ( Model (contact model) model.device, Cmd.none )
+            ( Model (contact model) model.device model.lang, Cmd.none )
 
         Responsive device ->
             ( { model | device = device }, Cmd.none )
@@ -110,38 +112,6 @@ subscriptions model =
     onResize <|
         \width height ->
             Responsive (Element.classifyDevice { width = width, height = height })
-
-
-
--- Colors
-
-
-bgProfileColor =
-    rgba255 40 40 40 0.4
-
-
-primaryBrown =
-    rgb255 146 131 116
-
-
-red =
-    rgb255 107 70 76
-
-
-blue =
-    rgb255 153 194 196
-
-
-darkBg =
-    rgb255 50 48 47
-
-
-darkest =
-    rgb255 40 40 40
-
-
-lightBg =
-    rgba255 60 56 54 0.9
 
 
 
@@ -172,10 +142,10 @@ frontMobile model =
     [ Element.layoutWith
         { options =
             [ Element.focusStyle <|
-                Element.FocusStyle (Just primaryBrown) Nothing Nothing
+                Element.FocusStyle (Just Color.primaryBrown) Nothing Nothing
             ]
         }
-        [ Background.color <| darkest ]
+        [ Background.color <| Color.darkest ]
         (cover model)
     ]
 
@@ -189,7 +159,7 @@ frontDesktop model =
     [ Element.layoutWith
         { options =
             [ Element.focusStyle <|
-                Element.FocusStyle (Just primaryBrown) Nothing Nothing
+                Element.FocusStyle (Just Color.primaryBrown) Nothing Nothing
             ]
         }
         [ Background.image "imgs/bg.jpg" ]
@@ -217,7 +187,7 @@ profile model =
                 [ centerX
                 , Element.alignTop
                 , width fill
-                , Background.color <| bgProfileColor
+                , Background.color <| Color.bgProfileColor
                 , height fill
                 , Border.rounded 6
                 , Element.spacingXY 0 20
@@ -234,7 +204,7 @@ profile model =
                 [ centerX
                 , Element.alignTop
                 , width (fill |> Element.maximum 800)
-                , Background.color <| bgProfileColor
+                , Background.color <| Color.bgProfileColor
                 , height (fill |> Element.maximum 275)
                 , Border.rounded 6
                 , Element.spacingXY 0 20
@@ -262,7 +232,7 @@ imageProfile model =
                     , Element.clip
                     , width <| Element.px 250
                     , height <| Element.px 250
-                    , Border.color <| primaryBrown
+                    , Border.color <| Color.primaryBrown
                     , Border.width 6
                     ]
                     { src = "imgs/me.jpg"
@@ -285,12 +255,12 @@ descProfile model =
                 ]
                 [ el
                     [ Font.size 62
-                    , Font.color <| primaryBrown
+                    , Font.color <| Color.primaryBrown
                     , Font.center
                     ]
                     (text my.name)
                 , el
-                    [ Font.color <| red
+                    [ Font.color <| Color.red
                     , Element.paddingXY 0 20
                     , Font.size 32
                     , Font.italic
@@ -298,7 +268,7 @@ descProfile model =
                     ]
                     (text my.job)
                 , el
-                    [ Font.color <| blue
+                    [ Font.color <| Color.blue
                     , Element.paddingXY 0 0
                     , Font.size 32
                     , Font.italic
@@ -327,18 +297,18 @@ descProfile model =
                             }
                         ]
                     , Font.size 62
-                    , Font.color <| primaryBrown
+                    , Font.color <| Color.primaryBrown
                     ]
                     (text my.name)
                 , el
-                    [ Font.color <| red
+                    [ Font.color <| Color.red
                     , Element.paddingXY 0 20
                     , Font.size 32
                     , Font.italic
                     ]
                     (text my.job)
                 , el
-                    [ Font.color <| blue
+                    [ Font.color <| Color.blue
                     , Element.paddingXY 0 0
                     , Font.size 32
                     , Font.italic
@@ -364,18 +334,18 @@ descProfile model =
                             }
                         ]
                     , Font.size 62
-                    , Font.color <| primaryBrown
+                    , Font.color <| Color.primaryBrown
                     ]
                     (text my.name)
                 , el
-                    [ Font.color <| red
+                    [ Font.color <| Color.red
                     , Element.paddingXY 0 20
                     , Font.size 32
                     , Font.italic
                     ]
                     (text my.job)
                 , el
-                    [ Font.color <| blue
+                    [ Font.color <| Color.blue
                     , Element.paddingXY 0 0
                     , Font.size 32
                     , Font.italic
@@ -395,7 +365,7 @@ actualContent model =
                 [ centerX
                 , Element.alignBottom
                 , width fill
-                , Background.color <| lightBg
+                , Background.color <| Color.lightBg
                 , height fill
                 , Border.rounded 6
                 ]
@@ -408,7 +378,7 @@ actualContent model =
                 [ centerX
                 , Element.alignBottom
                 , width fill
-                , Background.color <| lightBg
+                , Background.color <| Color.lightBg
                 , height fill
                 , Border.rounded 6
                 ]
@@ -421,7 +391,7 @@ actualContent model =
                 [ centerX
                 , Element.alignBottom
                 , width (fill |> Element.maximum 1000)
-                , Background.color <| lightBg
+                , Background.color <| Color.lightBg
                 , height (fill |> Element.maximum 500)
                 , Border.rounded 6
                 ]
@@ -439,7 +409,7 @@ menubar model =
         Phone ->
             column
                 [ Element.alignTop
-                , Background.color <| darkBg
+                , Background.color <| Color.darkBg
                 , width fill
                 , Border.roundEach
                     { bottomLeft = 0
@@ -460,7 +430,7 @@ menubar model =
                 Portrait ->
                     column
                         [ Element.alignTop
-                        , Background.color <| darkBg
+                        , Background.color <| Color.darkBg
                         , width fill
                         , Border.roundEach
                             { bottomLeft = 0
@@ -480,7 +450,7 @@ menubar model =
                 Landscape ->
                     row
                         [ Element.alignTop
-                        , Background.color <| darkBg
+                        , Background.color <| Color.darkBg
                         , width fill
                         , Border.roundEach
                             { bottomLeft = 0
@@ -500,7 +470,7 @@ menubar model =
         _ ->
             row
                 [ Element.alignTop
-                , Background.color <| darkBg
+                , Background.color <| Color.darkBg
                 , width fill
                 , Border.roundEach
                     { bottomLeft = 0
@@ -523,8 +493,8 @@ portaButton txt action model =
     case model.device.class of
         Phone ->
             Input.button
-                [ Background.color <| darkest
-                , Font.color <| primaryBrown
+                [ Background.color <| Color.darkest
+                , Font.color <| Color.primaryBrown
                 , Font.family
                     [ Font.typeface "IBM Plex Serif"
                     , Font.sansSerif
@@ -538,19 +508,19 @@ portaButton txt action model =
                     , right = 0
                     , top = 3
                     }
-                , Border.color <| primaryBrown
+                , Border.color <| Color.primaryBrown
                 , Element.mouseOver
-                    [ Background.color <| primaryBrown
-                    , Font.color <| darkest
-                    , Border.color <| darkest
+                    [ Background.color <| Color.primaryBrown
+                    , Font.color <| Color.darkest
+                    , Border.color <| Color.darkest
                     ]
                 ]
                 { onPress = action, label = text txt }
 
         Tablet ->
             Input.button
-                [ Background.color <| darkest
-                , Font.color <| primaryBrown
+                [ Background.color <| Color.darkest
+                , Font.color <| Color.primaryBrown
                 , Font.center
                 , Font.family
                     [ Font.typeface "IBM Plex Serif"
@@ -565,19 +535,19 @@ portaButton txt action model =
                     , right = 0
                     , top = 3
                     }
-                , Border.color <| primaryBrown
+                , Border.color <| Color.primaryBrown
                 , Element.mouseOver
-                    [ Background.color <| primaryBrown
-                    , Font.color <| darkest
-                    , Border.color <| darkest
+                    [ Background.color <| Color.primaryBrown
+                    , Font.color <| Color.darkest
+                    , Border.color <| Color.darkest
                     ]
                 ]
                 { onPress = action, label = text txt }
 
         _ ->
             Input.button
-                [ Background.color <| darkest
-                , Font.color <| primaryBrown
+                [ Background.color <| Color.darkest
+                , Font.color <| Color.primaryBrown
                 , Font.family
                     [ Font.typeface "IBM Plex Serif"
                     , Font.sansSerif
@@ -590,11 +560,11 @@ portaButton txt action model =
                     , right = 0
                     , top = 3
                     }
-                , Border.color <| primaryBrown
+                , Border.color <| Color.primaryBrown
                 , Element.mouseOver
-                    [ Background.color <| primaryBrown
-                    , Font.color <| darkest
-                    , Border.color <| darkest
+                    [ Background.color <| Color.primaryBrown
+                    , Font.color <| Color.darkest
+                    , Border.color <| Color.darkest
                     ]
                 ]
                 { onPress = action, label = text txt }
@@ -612,7 +582,7 @@ about =
         , Font.family
             [ Font.typeface "IBM Plex Serif"
             ]
-        , Font.color <| primaryBrown
+        , Font.color <| Color.primaryBrown
         , width fill
         , height fill
         ]
@@ -682,7 +652,7 @@ abilities model =
                 , Font.family
                     [ Font.typeface "IBM Plex Serif"
                     ]
-                , Font.color <| primaryBrown
+                , Font.color <| Color.primaryBrown
                 , height fill
                 , width fill
                 , Element.scrollbarY
@@ -709,16 +679,16 @@ abilities model =
                             , Element.alignTop
                             ]
                             [ el
-                                [ Font.color primaryBrown
+                                [ Font.color Color.primaryBrown
                                 , Font.underline
                                 , centerX
-                                , Background.color darkBg
+                                , Background.color Color.darkBg
                                 , padding 15
                                 ]
                                 (text "Programación")
                             , abilityProgress "PHP" IconsBrands.php (progressBar 8)
                             , abilityProgress "JavaScript" IconsBrands.js (progressBar 7)
-                            , abilityProgressImage "Ruby" "imgs/ruby.png" (progressBar 6)
+                            , abilityProgress "Ruby" IconsSolid.gem (progressBar 6)
                             , abilityProgressImage "Elm" "imgs/elm.png" (progressBar 6)
                             ]
                         , column
@@ -729,10 +699,10 @@ abilities model =
                             , Element.alignTop
                             ]
                             [ el
-                                [ Font.color primaryBrown
+                                [ Font.color Color.primaryBrown
                                 , Font.underline
                                 , centerX
-                                , Background.color darkBg
+                                , Background.color Color.darkBg
                                 , padding 15
                                 ]
                                 (text "Frameworks")
@@ -752,10 +722,10 @@ abilities model =
                             , Element.alignTop
                             ]
                             [ el
-                                [ Font.color primaryBrown
+                                [ Font.color Color.primaryBrown
                                 , Font.underline
                                 , centerX
-                                , Background.color darkBg
+                                , Background.color Color.darkBg
                                 , padding 15
                                 ]
                                 (text "Sistemas Operativos")
@@ -771,10 +741,10 @@ abilities model =
                             , Element.alignTop
                             ]
                             [ el
-                                [ Font.color primaryBrown
+                                [ Font.color Color.primaryBrown
                                 , Font.underline
                                 , centerX
-                                , Background.color darkBg
+                                , Background.color Color.darkBg
                                 , padding 15
                                 ]
                                 (text "Web")
@@ -793,7 +763,7 @@ abilities model =
                 , Font.family
                     [ Font.typeface "IBM Plex Serif"
                     ]
-                , Font.color <| primaryBrown
+                , Font.color <| Color.primaryBrown
                 , height fill
                 , width fill
                 , Element.scrollbarY
@@ -820,16 +790,16 @@ abilities model =
                             , Element.alignTop
                             ]
                             [ el
-                                [ Font.color primaryBrown
+                                [ Font.color Color.primaryBrown
                                 , Font.underline
                                 , centerX
-                                , Background.color darkBg
+                                , Background.color Color.darkBg
                                 , padding 15
                                 ]
                                 (text "Programación")
                             , abilityProgress "PHP" IconsBrands.php (progressBar 8)
                             , abilityProgress "JavaScript" IconsBrands.js (progressBar 7)
-                            , abilityProgressImage "Ruby" "imgs/ruby.png" (progressBar 6)
+                            , abilityProgress "Ruby" IconsSolid.gem (progressBar 6)
                             , abilityProgressImage "Elm" "imgs/elm.png" (progressBar 6)
                             ]
                         , column
@@ -840,10 +810,10 @@ abilities model =
                             , Element.alignTop
                             ]
                             [ el
-                                [ Font.color primaryBrown
+                                [ Font.color Color.primaryBrown
                                 , Font.underline
                                 , centerX
-                                , Background.color darkBg
+                                , Background.color Color.darkBg
                                 , padding 15
                                 ]
                                 (text "Frameworks")
@@ -863,10 +833,10 @@ abilities model =
                             , Element.alignTop
                             ]
                             [ el
-                                [ Font.color primaryBrown
+                                [ Font.color Color.primaryBrown
                                 , Font.underline
                                 , centerX
-                                , Background.color darkBg
+                                , Background.color Color.darkBg
                                 , padding 15
                                 ]
                                 (text "Sistemas Operativos")
@@ -882,10 +852,10 @@ abilities model =
                             , Element.alignTop
                             ]
                             [ el
-                                [ Font.color primaryBrown
+                                [ Font.color Color.primaryBrown
                                 , Font.underline
                                 , centerX
-                                , Background.color darkBg
+                                , Background.color Color.darkBg
                                 , padding 15
                                 ]
                                 (text "Web")
@@ -910,7 +880,7 @@ projects model =
                     , Font.underline
                     , Font.family [ Font.typeface "IBM Plex Serif" ]
                     , Font.size 26
-                    , Font.color <| primaryBrown
+                    , Font.color <| Color.primaryBrown
                     ]
                     (text "Proyectos")
                 , commonProject "SAICyR" IconsBrands.php (my.git ++ "/SAICyR")
@@ -931,7 +901,7 @@ projects model =
                         , Font.underline
                         , Font.size 26
                         , Font.family [ Font.typeface "IBM Plex Serif" ]
-                        , Font.color <| primaryBrown
+                        , Font.color <| Color.primaryBrown
                         ]
                         (text "Proyectos")
                     ]
@@ -976,7 +946,7 @@ services model =
                 [ Element.alignTop
                 , centerX
                 , Font.family [ Font.typeface "IBM Plex Serif" ]
-                , Font.color <| primaryBrown
+                , Font.color <| Color.primaryBrown
                 , height fill
                 , width fill
                 , Element.scrollbarY
@@ -1020,7 +990,7 @@ services model =
                 [ Element.alignTop
                 , centerX
                 , Font.family [ Font.typeface "IBM Plex Serif" ]
-                , Font.color <| primaryBrown
+                , Font.color <| Color.primaryBrown
                 , height fill
                 , width fill
                 , Element.scrollbarY
@@ -1068,8 +1038,8 @@ commonProject : String -> Icon.Icon -> String -> Element Msg
 commonProject name icon url =
     if String.isEmpty url then
         column
-            [ Background.color darkBg
-            , Font.color primaryBrown
+            [ Background.color Color.darkBg
+            , Font.color Color.primaryBrown
             , Border.rounded 6
             , padding 10
             , spacing 10
@@ -1086,7 +1056,7 @@ commonProject name icon url =
             , centerX
             ]
             [ el
-                [ Font.color primaryBrown
+                [ Font.color Color.primaryBrown
                 , centerX
                 , centerY
                 , height (fill |> Element.maximum 120)
@@ -1098,9 +1068,9 @@ commonProject name icon url =
             , el
                 [ centerX
                 , centerY
-                , Font.color <| darkBg
+                , Font.color <| Color.darkBg
                 , Font.size 12
-                , Background.color <| primaryBrown
+                , Background.color <| Color.primaryBrown
                 , Border.rounded 10
                 , padding 4
                 ]
@@ -1109,8 +1079,8 @@ commonProject name icon url =
 
     else
         column
-            [ Background.color darkBg
-            , Font.color primaryBrown
+            [ Background.color Color.darkBg
+            , Font.color Color.primaryBrown
             , Border.rounded 6
             , padding 10
             , height
@@ -1130,7 +1100,7 @@ commonProject name icon url =
                 , label =
                     column [ width fill, height fill ]
                         [ el
-                            [ Font.color primaryBrown
+                            [ Font.color Color.primaryBrown
                             , centerX
                             , centerY
                             , height (fill |> Element.maximum 120)
@@ -1147,21 +1117,23 @@ commonProject name icon url =
 linkSocial : String -> String -> Icon.Icon -> Element Msg
 linkSocial web url icon =
     column
-        [ Font.color primaryBrown
+        [ Font.color Color.primaryBrown
         , height fill
         , width fill
         , padding 10
         , centerY
-        , Element.mouseOver [ Background.color darkBg ]
+        , Element.mouseOver [ Background.color Color.darkBg ]
         ]
-        [ Element.newTabLink [ centerY, height fill ]
+        [ Element.newTabLink [ centerX, centerY, height fill, width fill ]
             { url = url
             , label =
-                column [ height fill ]
+                column [ height fill, width fill ]
                     [ el
-                        [ centerY
+                        [ Font.color Color.primaryBrown
+                        , centerY
                         , centerX
                         , height (fill |> Element.maximum 120)
+                        , width (fill |> Element.maximum 120)
                         , Element.paddingXY 0 15
                         ]
                         (Element.html <| Icon.viewIcon icon)
@@ -1178,7 +1150,7 @@ abilityProgress name icon progress =
             [ el [ centerX ] (text name)
             , row [ spacing 20 ]
                 [ el
-                    [ Font.color primaryBrown
+                    [ Font.color Color.primaryBrown
                     , height
                         (fill
                             |> Element.maximum 72
@@ -1205,7 +1177,7 @@ abilityProgressImage name url progress =
             [ el [ centerX ] (text name)
             , row [ spacing 20 ]
                 [ el
-                    [ Font.color primaryBrown
+                    [ Font.color Color.primaryBrown
                     , centerY
                     ]
                     (Element.image
