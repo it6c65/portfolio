@@ -2,6 +2,8 @@ module Main exposing (..)
 
 import Browser
 import Browser.Events exposing (onResize)
+import Color
+import Data exposing (my, progressBar)
 import Element
     exposing
         ( Device
@@ -33,7 +35,6 @@ import FontAwesome.Brands as IconsBrands
 import FontAwesome.Icon as Icon
 import FontAwesome.Solid as IconsSolid
 import Html exposing (Html)
-import Color
 
 
 
@@ -593,51 +594,13 @@ about =
             , Font.underline
             , Font.size 26
             ]
-            (-- In Spanish
-             text "Sobre mí"
-             -- In English
-             -- text "About me"
+            (
+             Data.aboutTitle.spanish
             )
         , paragraph [ Font.justify, spacing 10, padding 20 ]
-            [ -- In Spanish
-              text """Soy un estudiante universitario de informática
-                        culminando mi carrera, la cual disfruto mucho
-                        por lo cual siempre amplio mis horizontes en la
-                        informatica, ya que tengo muchos campos de
-                        intereses relacionados a ella, desde el
-                        desarrollo web hasta el de videojuegos, ultimamente
-                        dedicandome más a lo primero, trabajo en """
-
-            -- In English
-            -- text """I am a venezolan college student in Computer Sciences
-            --            finishing my career, which enjoy a lot studying it
-            --            constantly  because i have many interests in those
-            --            fields, from Web development until videogames development, althought
-            --            ultimately i dedicate more time at first of them, besides I am work in """
-            , Element.newTabLink [ Font.underline ]
-                { url = "https://ereditadigital.com"
-                , label = text "Eredità Digital"
-                }
-            , -- In Spanish
-              text """ como administrador de sistemas y soy freelancer
-                        en mi tiempo libre, es por esa razón tomo mi
-                        trabajo como algo personal, “Hacer lo que amo
-                        y amar lo que hago” siento que esa frase es
-                        importante para un programador, por esa razón
-                        me gusta enfrentarme a nuevos desafíos
-                        constantemente, siempre tomando en cuenta mi afán
-                        por el Software Libre y a los Sistemas Operativos
-                        tipo UNIX mientras lo hago."""
-
-            -- In English
-            -- text """ and I am freelancer in my freetime,
-            --         simply “Doing what i love it and loving what i do it”
-            --         actually expressing something important to me, since
-            --         i like learn new techs and programming languages,
-            --         so i think that the curiosity it's a
-            --         weapon for any programmer, and it's the reason because
-            --         i've never stop to learning and i advocate the Open Source
-            --         and Free Software, plus of i love UNIX-like Operating Systems."""
+            [ Data.aboutDescription.spanish1
+            , Data.workingAt
+            , Data.aboutDescription.spanish2
             ]
         ]
 
@@ -1200,36 +1163,3 @@ abilityProgressImage name url progress =
                 ]
             ]
         ]
-
-
-progressBar : Float -> String
-progressBar points =
-    String.repeat (ceiling points) "█"
-        ++ String.repeat (10 - ceiling points) "░"
-        ++ "    "
-        ++ String.fromFloat (points / 10 * 100)
-        ++ "%"
-
-
-
--- Static Data
-
-
-protocol =
-    { mail = "mailto://"
-    , link = "https://"
-    }
-
-
-my =
-    { name = "Luis ilarraza"
-    , job = "Programmer Freelancer"
-    , profession = "Full Stack Developer"
-    , ghPage = protocol.link ++ "it6c65.github.io/"
-
-    -- Social Links
-    , telegram = protocol.link ++ "t.me/it6c65"
-    , linkedin = protocol.link ++ "www.linkedin.com/in/luis-ilarraza-335a34195"
-    , git = protocol.link ++ "github.com/it6c65"
-    , email = protocol.mail ++ "enrique_ila@hotmail.com"
-    }
