@@ -50,6 +50,25 @@ aboutTitle =
     }
 
 
+projectTitle =
+    { spanish = text "Proyectos"
+    , english = text "Projects"
+    }
+
+skillsTitle =
+    { spanish = text "Habilidades"
+    , english = text "Skills"
+    }
+
+servicesTitle =
+    { spanish = text "Servicios"
+    , english = text "Services"
+    }
+
+contactTitle =
+    { spanish = text "Contacto"
+    , english = text "Contact"
+    }
 
 -- NEED refactoring this data structure
 

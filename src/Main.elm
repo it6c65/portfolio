@@ -20,8 +20,6 @@ import Element
         , image
         , padding
         , paragraph
-        , rgb255
-        , rgba255
         , row
         , spacing
         , text
@@ -669,11 +667,11 @@ abilities model =
                                 , padding 15
                                 ]
                                 (text "Frameworks")
-                            , abilityProgressImage "CodeIgniter" "imgs/ci.png" (progressBar 8)
+                            , abilityProgressImage "CodeIgniter" "imgs/ci.png" (progressBar 6)
                             , abilityProgress "React" IconsBrands.react (progressBar 7.5)
                             , abilityProgress "Vue" IconsBrands.vuejs (progressBar 6)
-                            , abilityProgress "Laravel" IconsBrands.laravel (progressBar 6)
-                            , abilityProgressImage "Ruby on Rails" "imgs/rails.png" (progressBar 4)
+                            , abilityProgress "Laravel" IconsBrands.laravel (progressBar 7)
+                            , abilityProgressImage "Ruby on Rails" "imgs/rails.png" (progressBar 8)
                             ]
                         ]
                     , column [ centerX, spacing 30, width fill, Element.paddingXY 0 20 ]
@@ -780,11 +778,11 @@ abilities model =
                                 , padding 15
                                 ]
                                 (text "Frameworks")
-                            , abilityProgressImage "CodeIgniter" "imgs/ci.png" (progressBar 8)
+                            , abilityProgressImage "CodeIgniter" "imgs/ci.png" (progressBar 6)
                             , abilityProgress "React" IconsBrands.react (progressBar 7.5)
                             , abilityProgress "Vue" IconsBrands.vuejs (progressBar 6)
-                            , abilityProgress "Laravel" IconsBrands.laravel (progressBar 6)
-                            , abilityProgressImage "Ruby on Rails" "imgs/rails.png" (progressBar 4)
+                            , abilityProgress "Laravel" IconsBrands.laravel (progressBar 7)
+                            , abilityProgressImage "Ruby on Rails" "imgs/rails.png" (progressBar 8)
                             ]
                         ]
                     , row [ centerX, spacing 30, width fill, Element.paddingXY 0 20 ]
@@ -851,7 +849,7 @@ projects model =
                 , commonProject "React-Calc" IconsBrands.react (my.ghPage ++ "calc-react")
                 , commonProject "Herramientas" IconsBrands.php (my.git ++ "/sdgh")
                 , commonProject "Recipes" IconsBrands.php ""
-                , commonProject "Dollars-App" IconsBrands.react (my.ghPage ++ "dollars-app")
+                , commonProject "RainPaste" IconsSolid.gem (my.git ++ "/rainpaste")
                 ]
 
         _ ->
@@ -876,7 +874,7 @@ projects model =
                 , row [ Element.spacingXY 20 0, centerX, centerY, width fill ]
                     [ commonProject "Herramientas" IconsBrands.php (my.git ++ "/sdgh")
                     , commonProject "Recipes" IconsBrands.php ""
-                    , commonProject "Dollars-App" IconsBrands.react (my.ghPage ++ "dollars-app")
+                    , commonProject "RainPaste" IconsSolid.gem (my.git ++ "/rainpaste")
                     ]
                 ]
 
