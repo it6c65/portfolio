@@ -592,9 +592,7 @@ about =
             , Font.underline
             , Font.size 26
             ]
-            (
-             Data.aboutTitle.spanish
-            )
+            Data.aboutTitle.spanish
         , paragraph [ Font.justify, spacing 10, padding 20 ]
             [ Data.aboutDescription.spanish1
             , Data.workingAt
@@ -648,8 +646,8 @@ abilities model =
                                 ]
                                 (text "Programación")
                             , abilityProgress "PHP" IconsBrands.php (progressBar 8)
+                            , abilityProgress "Ruby" IconsSolid.gem (progressBar 7)
                             , abilityProgress "JavaScript" IconsBrands.js (progressBar 7)
-                            , abilityProgress "Ruby" IconsSolid.gem (progressBar 6)
                             , abilityProgressImage "Elm" "imgs/elm.png" (progressBar 6)
                             ]
                         , column
@@ -667,11 +665,11 @@ abilities model =
                                 , padding 15
                                 ]
                                 (text "Frameworks")
-                            , abilityProgressImage "CodeIgniter" "imgs/ci.png" (progressBar 6)
+                            , abilityProgressImage "Ruby on Rails" "imgs/rails.png" (progressBar 8)
+                            , abilityProgress "Laravel" IconsBrands.laravel (progressBar 7)
                             , abilityProgress "React" IconsBrands.react (progressBar 7.5)
                             , abilityProgress "Vue" IconsBrands.vuejs (progressBar 6)
-                            , abilityProgress "Laravel" IconsBrands.laravel (progressBar 7)
-                            , abilityProgressImage "Ruby on Rails" "imgs/rails.png" (progressBar 8)
+                            , abilityProgressImage "CodeIgniter" "imgs/ci.png" (progressBar 6)
                             ]
                         ]
                     , column [ centerX, spacing 30, width fill, Element.paddingXY 0 20 ]
@@ -778,11 +776,11 @@ abilities model =
                                 , padding 15
                                 ]
                                 (text "Frameworks")
-                            , abilityProgressImage "CodeIgniter" "imgs/ci.png" (progressBar 6)
+                            , abilityProgressImage "Ruby on Rails" "imgs/rails.png" (progressBar 8)
+                            , abilityProgress "Laravel" IconsBrands.laravel (progressBar 7)
                             , abilityProgress "React" IconsBrands.react (progressBar 7.5)
                             , abilityProgress "Vue" IconsBrands.vuejs (progressBar 6)
-                            , abilityProgress "Laravel" IconsBrands.laravel (progressBar 7)
-                            , abilityProgressImage "Ruby on Rails" "imgs/rails.png" (progressBar 8)
+                            , abilityProgressImage "CodeIgniter" "imgs/ci.png" (progressBar 6)
                             ]
                         ]
                     , row [ centerX, spacing 30, width fill, Element.paddingXY 0 20 ]
