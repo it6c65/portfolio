@@ -49,7 +49,11 @@ main =
 
 init : Flags -> ( Model, Cmd Msg )
 init flags =
-    ( Model about (Element.classifyDevice flags) (String.left 2 flags.lang), Cmd.none )
+    let
+        lang =
+            String.left 2 flags.lang
+    in
+    ( Model (about lang) (Element.classifyDevice flags) lang, Cmd.none )
 
 
 
@@ -84,7 +88,7 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Home ->
-            ( Model about model.device model.lang, Cmd.none )
+            ( Model (about model.lang) model.device model.lang, Cmd.none )
 
         Services ->
             ( Model (services model) model.device model.lang, Cmd.none )
@@ -119,7 +123,15 @@ subscriptions model =
 
 view : Model -> Browser.Document Msg
 view model =
-    Browser.Document "Portafolio" (body model)
+    let
+        documentTitle =
+            if model.lang == "es" then
+                Data.spanish.main
+
+            else
+                Data.english.main
+    in
+    Browser.Document documentTitle (body model)
 
 
 body : Model -> List (Html Msg)
@@ -404,6 +416,42 @@ actualContent model =
 
 
 menubar model =
+    let
+        aboutTitle =
+            if model.lang == "es" then
+                Data.spanish.about
+
+            else
+                Data.english.about
+
+        servicesTitle =
+            if model.lang == "es" then
+                Data.spanish.services.title
+
+            else
+                Data.english.services.title
+
+        projectsTitle =
+            if model.lang == "es" then
+                Data.spanish.projects
+
+            else
+                Data.english.projects
+
+        skillsTitle =
+            if model.lang == "es" then
+                Data.spanish.skills
+
+            else
+                Data.english.skills
+
+        contactTitle =
+            if model.lang == "es" then
+                Data.spanish.contact
+
+            else
+                Data.english.contact
+    in
     case model.device.class of
         Phone ->
             column
@@ -417,11 +465,11 @@ menubar model =
                     , topRight = 6
                     }
                 ]
-                [ portaButton "Inicio" (Just Home) model
-                , portaButton "Servicios" (Just Services) model
-                , portaButton "Proyectos" (Just Projects) model
-                , portaButton "Habilidades" (Just Abilities) model
-                , portaButton "Contacto" (Just Contact) model
+                [ portaButton aboutTitle (Just Home) model
+                , portaButton servicesTitle (Just Services) model
+                , portaButton projectsTitle (Just Projects) model
+                , portaButton skillsTitle (Just Abilities) model
+                , portaButton contactTitle (Just Contact) model
                 ]
 
         Tablet ->
@@ -439,11 +487,11 @@ menubar model =
                             }
                         , spacing 10
                         ]
-                        [ portaButton "Inicio" (Just Home) model
-                        , portaButton "Servicios" (Just Services) model
-                        , portaButton "Proyectos" (Just Projects) model
-                        , portaButton "Habilidades" (Just Abilities) model
-                        , portaButton "Contacto" (Just Contact) model
+                        [ portaButton aboutTitle (Just Home) model
+                        , portaButton servicesTitle (Just Services) model
+                        , portaButton projectsTitle (Just Projects) model
+                        , portaButton skillsTitle (Just Abilities) model
+                        , portaButton contactTitle (Just Contact) model
                         ]
 
                 Landscape ->
@@ -459,11 +507,11 @@ menubar model =
                             }
                         , spacing 10
                         ]
-                        [ portaButton "Inicio" (Just Home) model
-                        , portaButton "Servicios" (Just Services) model
-                        , portaButton "Proyectos" (Just Projects) model
-                        , portaButton "Habilidades" (Just Abilities) model
-                        , portaButton "Contacto" (Just Contact) model
+                        [ portaButton aboutTitle (Just Home) model
+                        , portaButton servicesTitle (Just Services) model
+                        , portaButton projectsTitle (Just Projects) model
+                        , portaButton skillsTitle (Just Abilities) model
+                        , portaButton contactTitle (Just Contact) model
                         ]
 
         _ ->
@@ -479,11 +527,11 @@ menubar model =
                     }
                 , spacing 10
                 ]
-                [ portaButton "Inicio" (Just Home) model
-                , portaButton "Servicios" (Just Services) model
-                , portaButton "Proyectos" (Just Projects) model
-                , portaButton "Habilidades" (Just Abilities) model
-                , portaButton "Contacto" (Just Contact) model
+                [ portaButton aboutTitle (Just Home) model
+                , portaButton servicesTitle (Just Services) model
+                , portaButton projectsTitle (Just Projects) model
+                , portaButton skillsTitle (Just Abilities) model
+                , portaButton contactTitle (Just Contact) model
                 ]
 
 
@@ -573,8 +621,30 @@ portaButton txt action model =
 -- Pages Content
 
 
-about : Element Msg
-about =
+about : String -> Element Msg
+about lang =
+    let
+        aboutTitle =
+            if lang == "es" then
+                Data.spanish.about
+
+            else
+                Data.english.about
+
+        descriptionPartOne =
+            if lang == "es" then
+                Data.spanish.description.part1
+
+            else
+                Data.english.description.part1
+
+        descriptionPartTwo =
+            if lang == "es" then
+                Data.spanish.description.part2
+
+            else
+                Data.english.description.part2
+    in
     Element.textColumn
         [ Element.alignTop
         , centerX
@@ -592,17 +662,25 @@ about =
             , Font.underline
             , Font.size 26
             ]
-            Data.aboutTitle.spanish
+            (text aboutTitle)
         , paragraph [ Font.justify, spacing 10, padding 20 ]
-            [ Data.aboutDescription.spanish1
+            [ text descriptionPartOne
             , Data.workingAt
-            , Data.aboutDescription.spanish2
+            , text descriptionPartTwo
             ]
         ]
 
 
 abilities : Model -> Element Msg
 abilities model =
+    let
+        skillsTitle =
+            if model.lang == "es" then
+                Data.spanish.skills
+
+            else
+                Data.english.skills
+    in
     case model.device.class of
         Phone ->
             column
@@ -623,11 +701,7 @@ abilities model =
                     , Font.underline
                     , Font.size 26
                     ]
-                    (-- In Spanish
-                     text "Habilidades"
-                     -- In English
-                     -- text "Abilities"
-                    )
+                    (text skillsTitle)
                 , column [ width fill, height fill ]
                     [ column [ centerX, spacing 30, width fill ]
                         [ column
@@ -644,7 +718,7 @@ abilities model =
                                 , Background.color Color.darkBg
                                 , padding 15
                                 ]
-                                (text "Programación")
+                                (text "Programming")
                             , abilityProgress "PHP" IconsBrands.php (progressBar 8)
                             , abilityProgress "Ruby" IconsSolid.gem (progressBar 7)
                             , abilityProgress "JavaScript" IconsBrands.js (progressBar 7)
@@ -687,7 +761,7 @@ abilities model =
                                 , Background.color Color.darkBg
                                 , padding 15
                                 ]
-                                (text "Sistemas Operativos")
+                                (text "OSes")
                             , abilityProgress "Ubuntu" IconsBrands.ubuntu (progressBar 8.5)
                             , abilityProgress "FreeBSD" IconsBrands.freebsd (progressBar 6)
                             , abilityProgress "CentOS" IconsBrands.centos (progressBar 3.5)
@@ -734,11 +808,7 @@ abilities model =
                     , Font.underline
                     , Font.size 26
                     ]
-                    (-- In Spanish
-                     text "Habilidades"
-                     -- In English
-                     -- text "Abilities"
-                    )
+                    (text skillsTitle)
                 , column [ width fill, height fill ]
                     [ row [ centerX, spacing 30, width fill ]
                         [ column
@@ -755,7 +825,7 @@ abilities model =
                                 , Background.color Color.darkBg
                                 , padding 15
                                 ]
-                                (text "Programación")
+                                (text "Programming")
                             , abilityProgress "PHP" IconsBrands.php (progressBar 8)
                             , abilityProgress "JavaScript" IconsBrands.js (progressBar 7)
                             , abilityProgress "Ruby" IconsSolid.gem (progressBar 6)
@@ -798,7 +868,7 @@ abilities model =
                                 , Background.color Color.darkBg
                                 , padding 15
                                 ]
-                                (text "Sistemas Operativos")
+                                (text "OSes")
                             , abilityProgress "Ubuntu" IconsBrands.ubuntu (progressBar 8.5)
                             , abilityProgress "FreeBSD" IconsBrands.freebsd (progressBar 6)
                             , abilityProgress "CentOS" IconsBrands.centos (progressBar 3.5)
@@ -829,6 +899,14 @@ abilities model =
 
 projects : Model -> Element Msg
 projects model =
+    let
+        projectsTitle =
+            if model.lang == "es" then
+                Data.spanish.projects
+
+            else
+                Data.english.projects
+    in
     case model.device.class of
         Phone ->
             column [ Element.spacing 20, width fill, height fill ]
@@ -841,7 +919,7 @@ projects model =
                     , Font.size 26
                     , Font.color <| Color.primaryBrown
                     ]
-                    (text "Proyectos")
+                    (text projectsTitle)
                 , commonProject "SAICyR" IconsBrands.php (my.git ++ "/SAICyR")
                 , commonProject "Chami" IconsBrands.wordpress ""
                 , commonProject "React-Calc" IconsBrands.react (my.ghPage ++ "calc-react")
@@ -862,7 +940,7 @@ projects model =
                         , Font.family [ Font.typeface "IBM Plex Serif" ]
                         , Font.color <| Color.primaryBrown
                         ]
-                        (text "Proyectos")
+                        (text projectsTitle)
                     ]
                 , row [ Element.spacingXY 20 0, centerX, centerY, width fill ]
                     [ commonProject "SAICyR" IconsBrands.php (my.git ++ "/SAICyR")
@@ -899,94 +977,68 @@ contact model =
 
 services : Model -> Element Msg
 services model =
-    case model.device.class of
-        Phone ->
-            column
-                [ Element.alignTop
-                , centerX
-                , Font.family [ Font.typeface "IBM Plex Serif" ]
-                , Font.color <| Color.primaryBrown
-                , height fill
-                , width fill
-                , Element.scrollbarY
-                ]
-                [ el
-                    [ Font.bold
-                    , centerX
-                    , Element.paddingXY 0 30
-                    , Font.underline
-                    , Font.size 26
-                    ]
-                    (-- In Spanish
-                     text "Servicios"
-                     -- In English
-                     -- text "Services"
-                    )
-                , column []
-                    [ Element.textColumn [ Font.justify, spacing 10 ]
-                        [ el [ Font.bold ] (text "• Desarrollo Web")
-                        , el [ Element.paddingXY 20 5 ] (text "ø Vista (Front)")
-                        , el [ Element.paddingXY 20 5 ] (text "ø Servidor (Back)")
-                        , el [ Element.paddingXY 20 5 ] (text "ø Toda (Full)")
-                        , el [ Font.bold ] (text "• Creacion de Temas")
-                        , el [ Element.paddingXY 20 5 ] (text "ø Wordpress")
-                        , el [ Element.paddingXY 20 5 ] (text "ø OpenCart")
-                        , el [ Element.paddingXY 20 5 ] (text "ø Omeka")
-                        ]
-                    , Element.textColumn [ Font.justify, spacing 10 ]
-                        [ el [ Font.bold ] (text "• Diseño de Logos")
-                        , el [ Font.bold ] (text "• Montar aplicacion en servidor")
-                        , el [ Element.paddingXY 20 5 ] (text "ø Wordpress")
-                        , el [ Element.paddingXY 20 5 ] (text "ø OpenCart")
-                        , el [ Element.paddingXY 20 5 ] (text "ø Omeka")
-                        , el [ Font.bold ] (text "• Traducciones")
-                        ]
-                    ]
-                ]
+    let
+        servicesTitle =
+            if model.lang == "es" then
+                Data.spanish.services.title
 
-        _ ->
-            column
-                [ Element.alignTop
-                , centerX
-                , Font.family [ Font.typeface "IBM Plex Serif" ]
-                , Font.color <| Color.primaryBrown
-                , height fill
-                , width fill
-                , Element.scrollbarY
+            else
+                Data.english.services.title
+
+        shapeDevice =
+            case model.device.class of
+                Phone ->
+                    [ Font.justify, spacing 10 ]
+
+                _ ->
+                    [ Font.justify, spacing 10, Element.paddingXY 50 20, Element.alignTop ]
+
+        webdev =
+            if model.lang == "es" then
+                Data.spanish.services.features.webdev
+
+            else
+                Data.english.services.features.webdev
+
+        themes =
+            if model.lang == "es" then
+                Data.spanish.services.features.themes
+
+            else
+                Data.english.services.features.themes
+
+        design =
+            if model.lang == "es" then
+                Data.spanish.services.features.design
+
+            else
+                Data.english.services.features.design
+    in
+    column
+        [ Element.alignTop
+        , centerX
+        , Font.family [ Font.typeface "IBM Plex Serif" ]
+        , Font.color <| Color.primaryBrown
+        , height fill
+        , width fill
+        , Element.scrollbarY
+        ]
+        [ el
+            [ Font.bold
+            , centerX
+            , Element.paddingXY 0 30
+            , Font.underline
+            , Font.size 26
+            ]
+            (text servicesTitle)
+        , column []
+            [ Element.textColumn shapeDevice
+                [ el [ Font.bold ] (text webdev)
+                , el [ Font.bold ] (text themes)
+                , el [ Font.bold ] (text design)
                 ]
-                [ el
-                    [ Font.bold
-                    , centerX
-                    , Element.paddingXY 0 30
-                    , Font.underline
-                    , Font.size 26
-                    ]
-                    (-- In Spanish
-                     text "Servicios"
-                     -- In English
-                     -- text "Services"
-                    )
-                , row []
-                    [ Element.textColumn [ Font.justify, spacing 10, Element.paddingXY 80 20, Element.alignTop ]
-                        [ el [ Font.bold ] (text "• Desarrollo Web")
-                        , el [ Element.paddingXY 20 5 ] (text "ø Vista (Front)")
-                        , el [ Element.paddingXY 20 5 ] (text "ø Servidor (Back)")
-                        , el [ Element.paddingXY 20 5 ] (text "ø Toda (Full)")
-                        , el [ Font.bold ] (text "• Creacion de Temas")
-                        , el [ Element.paddingXY 20 5 ] (text "ø Wordpress")
-                        , el [ Element.paddingXY 20 5 ] (text "ø OpenCart")
-                        , el [ Element.paddingXY 20 5 ] (text "ø Omeka")
-                        ]
-                    , Element.textColumn [ Font.justify, spacing 10, Element.paddingXY 30 20, Element.alignTop ]
-                        [ el [ Font.bold ] (text "• Diseño de Logos")
-                        , el [ Font.bold ] (text "• Montar aplicacion en servidor")
-                        , el [ Element.paddingXY 20 5 ] (text "ø Wordpress")
-                        , el [ Element.paddingXY 20 5 ] (text "ø OpenCart")
-                        , el [ Element.paddingXY 20 5 ] (text "ø Omeka")
-                        , el [ Font.bold ] (text "• Traducciones")
-                        ]
-                    ]
-                ]
+            ]
+        ]
 
 
 
@@ -1033,7 +1085,7 @@ commonProject name icon url =
                 , Border.rounded 10
                 , padding 4
                 ]
-                (text "En Construccion")
+                (text "Building...")
             ]
 
     else
