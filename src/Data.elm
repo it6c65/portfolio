@@ -77,11 +77,11 @@ spanish =
         { title = "Servicios"
         , features =
             { webdev = "Desarrollo Web"
-            , webdevDescription = "Creacion de Temas"
+            , webdevDescription = "Tengo experiencia en varios FW para el desarrollo, especialmente en PHP y Ruby"
             , themes = "Creacion de Temas"
-            , themesDescription = "Creacion de Temas"
+            , themesDescription = """Tengo experiencia creando temas para Wordpress, Omeka y Opencart"""
             , design = "Diseño de Logos"
-            , designDescription = "Diseño de Logos"
+            , designDescription = """A veces diseño Logos en mi tiempo libre"""
             }
         }
     , contact = "Contacto"

@@ -985,20 +985,19 @@ services model =
             else
                 Data.english.services.title
 
-        shapeDevice =
-            case model.device.class of
-                Phone ->
-                    [ Font.justify, spacing 10 ]
-
-                _ ->
-                    [ Font.justify, spacing 10, Element.paddingXY 50 20, Element.alignTop ]
-
         webdev =
             if model.lang == "es" then
                 Data.spanish.services.features.webdev
 
             else
                 Data.english.services.features.webdev
+
+        webdevDescription =
+            if model.lang == "es" then
+                Data.spanish.services.features.webdevDescription
+
+            else
+                Data.english.services.features.webdevDescription
 
         themes =
             if model.lang == "es" then
@@ -1007,12 +1006,34 @@ services model =
             else
                 Data.english.services.features.themes
 
+        themesDescription =
+            if model.lang == "es" then
+                Data.spanish.services.features.themesDescription
+
+            else
+                Data.english.services.features.themesDescription
+
         design =
             if model.lang == "es" then
                 Data.spanish.services.features.design
 
             else
                 Data.english.services.features.design
+
+        designDescription =
+            if model.lang == "es" then
+                Data.spanish.services.features.designDescription
+
+            else
+                Data.english.services.features.designDescription
+
+        shapeDevice =
+            case model.device.class of
+                Phone ->
+                    [ Font.justify, spacing 10 ]
+
+                _ ->
+                    [ Font.justify, spacing 10, Element.paddingXY 40 20, Element.alignTop, centerX ]
     in
     column
         [ Element.alignTop
@@ -1031,11 +1052,27 @@ services model =
             , Font.size 26
             ]
             (text servicesTitle)
-        , column []
+        , column [centerX, width fill]
             [ Element.textColumn shapeDevice
-                [ el [ Font.bold ] (text webdev)
-                , el [ Font.bold ] (text themes)
-                , el [ Font.bold ] (text design)
+                [ row
+                    [ width fill
+                    , Background.color Color.darkBg
+                    , Border.rounded 6
+                    ]
+                    [ commonProject webdev IconsSolid.envelope "#"
+                    , paragraph [ centerX, Element.paddingXY 20 0 ]
+                        [ text webdevDescription ]
+                    ]
+                , row [ width fill ]
+                    [ commonProject themes IconsSolid.envelope "#"
+                    , paragraph [ Element.alignTop, Element.paddingXY 20 0 ]
+                        [ text themesDescription ]
+                    ]
+                , row [ width fill ]
+                    [ commonProject design IconsSolid.envelope "#"
+                    , paragraph [ Element.alignTop, Element.paddingXY 20 0 ]
+                        [ text designDescription ]
+                    ]
                 ]
             ]
         ]
