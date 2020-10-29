@@ -60,8 +60,6 @@ type alias Translatable =
             , themesDescription : String
             , webdev : String
             , webdevDescription : String
-            , design : String
-            , designDescription : String
             }
         }
     , contact : String
@@ -77,11 +75,14 @@ spanish =
         { title = "Servicios"
         , features =
             { webdev = "Desarrollo Web"
-            , webdevDescription = "Tengo experiencia en varios FW para el desarrollo, especialmente en PHP y Ruby"
-            , themes = "Creacion de Temas"
-            , themesDescription = """Tengo experiencia creando temas para Wordpress, Omeka y Opencart"""
-            , design = "Diseño de Logos"
-            , designDescription = """A veces diseño Logos en mi tiempo libre"""
+            , webdevDescription = """He desarrollado en varios frameworks web,
+                                   especialmente en PHP y Ruby en cuanto al backend,
+                                   en el frontend me he desenvuelto en React, Vue y
+                                   mi favorito Elm"""
+            , themes = "Creación de Temas"
+            , themesDescription = """He trabajado para una empresa que se dedicaba hacer temas
+                                   Wordpress, en la actualidad hice algunos temas para Omeka
+                                   y he usado algunas veces Opencart"""
             }
         }
     , contact = "Contacto"
@@ -115,12 +116,16 @@ english =
     , services =
         { title = "Services"
         , features =
-            { webdev = "Desarrollo Web"
-            , webdevDescription = "Desarrollo Web"
-            , themes = "Creacion de Temas"
-            , themesDescription = "Creacion de Temas"
-            , design = "Diseño de Logos"
-            , designDescription = "Diseño de Logos"
+            { webdev = "Web Development"
+            , webdevDescription = """I have developing in several web frameworks,
+                                   especially on PHP and Ruby in the backend,
+                                   in the frontend i have experience in React, Vue and
+                                   my favorite Elm"""
+            , themes = "Themes Creation"
+            , themesDescription = """I worked for a little company of design especialized in
+                                   themes for wordpress, although currently i made
+                                   several themes for Omeka and i have used
+                                   sometimes Opencart"""
             }
         }
     , contact = "Contact"

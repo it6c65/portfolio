@@ -1013,20 +1013,6 @@ services model =
             else
                 Data.english.services.features.themesDescription
 
-        design =
-            if model.lang == "es" then
-                Data.spanish.services.features.design
-
-            else
-                Data.english.services.features.design
-
-        designDescription =
-            if model.lang == "es" then
-                Data.spanish.services.features.designDescription
-
-            else
-                Data.english.services.features.designDescription
-
         shapeDevice =
             case model.device.class of
                 Phone ->
@@ -1034,6 +1020,15 @@ services model =
 
                 _ ->
                     [ Font.justify, spacing 10, Element.paddingXY 40 20, Element.alignTop, centerX ]
+
+        paragraphDesktop textDesc =
+            case model.device.class of
+                Phone ->
+                    Element.none
+                _ ->
+                    paragraph [ centerX, Element.paddingXY 20 0 ]
+                        [ text textDesc ]
+
     in
     column
         [ Element.alignTop
@@ -1052,26 +1047,25 @@ services model =
             , Font.size 26
             ]
             (text servicesTitle)
-        , column [centerX, width fill]
+        , column [ centerX ]
             [ Element.textColumn shapeDevice
                 [ row
                     [ width fill
                     , Background.color Color.darkBg
                     , Border.rounded 6
+                    , centerX
                     ]
-                    [ commonProject webdev IconsSolid.envelope "#"
-                    , paragraph [ centerX, Element.paddingXY 20 0 ]
-                        [ text webdevDescription ]
+                    [ commonProject webdev IconsSolid.code "#"
+                    , paragraphDesktop webdevDescription
                     ]
-                , row [ width fill ]
-                    [ commonProject themes IconsSolid.envelope "#"
-                    , paragraph [ Element.alignTop, Element.paddingXY 20 0 ]
-                        [ text themesDescription ]
+                , row
+                    [ width fill
+                    , Background.color Color.darkBg
+                    , Border.rounded 6
+                    , centerX
                     ]
-                , row [ width fill ]
-                    [ commonProject design IconsSolid.envelope "#"
-                    , paragraph [ Element.alignTop, Element.paddingXY 20 0 ]
-                        [ text designDescription ]
+                    [ commonProject themes IconsSolid.eye "#"
+                    , paragraphDesktop themesDescription
                     ]
                 ]
             ]
