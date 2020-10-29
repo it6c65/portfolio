@@ -4,12 +4,22 @@ import Element exposing (newTabLink, text)
 import Element.Font as Font
 
 
+
 -- Static Data
 
 
 protocol =
     { mail = "mailto://"
     , link = "https://"
+    }
+
+
+images =
+    { photo = "imgs/me.webp"
+    , background = "imgs/bg.webp"
+    , elm = "imgs/elm.webp"
+    , rails = "imgs/rails.webp"
+    , ci = "imgs/ci.webp"
     }
 
 
@@ -41,6 +51,7 @@ my =
 
 -- Translations
 
+
 type alias Translatable =
     { -- Titles
       main : String
@@ -64,6 +75,7 @@ type alias Translatable =
         }
     , contact : String
     }
+
 
 spanish : Translatable
 spanish =

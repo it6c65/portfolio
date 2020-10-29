@@ -173,7 +173,7 @@ frontDesktop model =
                 Element.FocusStyle (Just Color.primaryBrown) Nothing Nothing
             ]
         }
-        [ Background.image "imgs/bg.jpg" ]
+        [ Background.image Data.images.background ]
         (cover model)
     ]
 
@@ -246,7 +246,7 @@ imageProfile model =
                     , Border.color <| Color.primaryBrown
                     , Border.width 6
                     ]
-                    { src = "imgs/me.jpg"
+                    { src = Data.images.photo
                     , description = "Photo_Me"
                     }
 
@@ -722,7 +722,7 @@ abilities model =
                             , abilityProgress "PHP" IconsBrands.php (progressBar 8)
                             , abilityProgress "Ruby" IconsSolid.gem (progressBar 7)
                             , abilityProgress "JavaScript" IconsBrands.js (progressBar 7)
-                            , abilityProgressImage "Elm" "imgs/elm.png" (progressBar 6)
+                            , abilityProgressImage "Elm" Data.images.elm (progressBar 6)
                             ]
                         , column
                             [ centerX
@@ -739,11 +739,11 @@ abilities model =
                                 , padding 15
                                 ]
                                 (text "Frameworks")
-                            , abilityProgressImage "Ruby on Rails" "imgs/rails.png" (progressBar 8)
+                            , abilityProgressImage "Ruby on Rails" Data.images.rails (progressBar 8)
                             , abilityProgress "Laravel" IconsBrands.laravel (progressBar 7)
                             , abilityProgress "React" IconsBrands.react (progressBar 7.5)
                             , abilityProgress "Vue" IconsBrands.vuejs (progressBar 6)
-                            , abilityProgressImage "CodeIgniter" "imgs/ci.png" (progressBar 6)
+                            , abilityProgressImage "CodeIgniter" Data.images.ci (progressBar 6)
                             ]
                         ]
                     , column [ centerX, spacing 30, width fill, Element.paddingXY 0 20 ]
@@ -829,7 +829,7 @@ abilities model =
                             , abilityProgress "PHP" IconsBrands.php (progressBar 8)
                             , abilityProgress "JavaScript" IconsBrands.js (progressBar 7)
                             , abilityProgress "Ruby" IconsSolid.gem (progressBar 6)
-                            , abilityProgressImage "Elm" "imgs/elm.png" (progressBar 6)
+                            , abilityProgressImage "Elm" Data.images.elm (progressBar 6)
                             ]
                         , column
                             [ centerX
@@ -846,11 +846,11 @@ abilities model =
                                 , padding 15
                                 ]
                                 (text "Frameworks")
-                            , abilityProgressImage "Ruby on Rails" "imgs/rails.png" (progressBar 8)
+                            , abilityProgressImage "Ruby on Rails" Data.images.rails (progressBar 8)
                             , abilityProgress "Laravel" IconsBrands.laravel (progressBar 7)
                             , abilityProgress "React" IconsBrands.react (progressBar 7.5)
                             , abilityProgress "Vue" IconsBrands.vuejs (progressBar 6)
-                            , abilityProgressImage "CodeIgniter" "imgs/ci.png" (progressBar 6)
+                            , abilityProgressImage "CodeIgniter" Data.images.ci (progressBar 6)
                             ]
                         ]
                     , row [ centerX, spacing 30, width fill, Element.paddingXY 0 20 ]
